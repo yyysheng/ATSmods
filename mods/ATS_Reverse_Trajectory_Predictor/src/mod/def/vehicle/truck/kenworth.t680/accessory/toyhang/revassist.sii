@@ -5,7 +5,7 @@ accessory_addon_int_data : revassist.ats06.toyhang
     name: "Reverse Assist Anchor"
     price: 1
     unlock: 0
-    icon: "default"
+    icon: "toyhang/dice_pr"
     part_type: aftermarket
 
     interior_model: "/model/reverse_assist/accessory_anchor.pmd"
