@@ -1,0 +1,4 @@
+ATS Reverse Trajectory Predictor currently supports American Truck Simulator 1.60 only.
+
+此信息包用于提示：美卡倒车轨迹预测当前仅支持 American Truck Simulator 1.60。
+

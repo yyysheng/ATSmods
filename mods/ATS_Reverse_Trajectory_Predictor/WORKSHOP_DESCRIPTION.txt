@@ -1,0 +1,32 @@
+美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor
+
+挂入倒挡后，根据 SCS 官方遥测数据实时预测车头与挂车未来姿态，并在游戏世界中显示蓝色车头边界和橙色挂车边界，固定预测距离 5 米。
+
+功能：
+• 实时车头倒车轨迹
+• 挂车铰接姿态与未来位置预测
+• 根据接地、提升和转向轮状态计算有效轴组
+• 支持 19 款 ATS 1.60 原版卡车
+• 仅在倒挡时显示
+• 无碰撞世界实体，所有正常游戏视角均可见
+• 不依赖 ReShade、dxgi.dll 或 d3d11.dll
+
+兼容：American Truck Simulator 1.60.1.8 / Windows x64
+
+重要安装说明：
+Steam 创意工坊无法把必需的遥测插件 DLL 安装到游戏目录。订阅本模组后，请从 GitHub Release 下载 Workshop 安装包，退出游戏，解压并运行 Install-Workshop.bat：
+https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.10.8
+
+安装成功会显示绿色字符，失败会显示红色字符。安装器会把 DLL 安装到 bin\win_x64；如果已有 bin\win_x64\plugins 文件夹，也会同步复制一份。
+
+进入模组管理器启用本模组，然后在驾驶室挂件槽安装 Reverse Assist Anchor（锚点本身不可见）。
+
+---
+
+When reverse gear is selected, the plug-in predicts tractor and trailer posture from official telemetry and displays separate blue tractor and orange trailer boundaries over a fixed 5 m path.
+
+Requires the Workshop runtime package from GitHub because Steam Workshop cannot install the telemetry DLL into the game directory:
+https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.10.8
+
+Exit ATS, extract the package, run Install-Workshop.bat, enable the mod, and install Reverse Assist Anchor in a cabin accessory slot.
+

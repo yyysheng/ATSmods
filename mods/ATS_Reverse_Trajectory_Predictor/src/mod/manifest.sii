@@ -1,0 +1,12 @@
+SiiNunit
+{
+mod_package : .package_name {
+ package_version: "0.10.8"
+ display_name: "美卡倒车轨迹预测"
+ author: "yyysheng"
+ category[]: "interior"
+ icon: "mod_icon.jpg"
+ description_file: "description.txt"
+ compatible_versions[]: "1.60.*"
+}
+}
