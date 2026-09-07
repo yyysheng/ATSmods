@@ -1,4 +1,5 @@
 /build/
 /src/entity_runtime/obj/
+/src/entity_runtime/obj_profile_tests/
 /src/world_runtime/obj/
 /src/world_runtime/obj_tests/

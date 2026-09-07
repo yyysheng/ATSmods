@@ -37,10 +37,12 @@ function Find-AtsGameRoot {
         }
     }
     foreach ($library in $steamLibraries) {
+        if (-not (Test-Path -LiteralPath $library -PathType Container -ErrorAction SilentlyContinue)) { continue }
         $candidates.Add((Join-Path $library 'steamapps\common\American Truck Simulator'))
     }
 
     foreach ($candidate in $candidates | Select-Object -Unique) {
+        if (-not (Test-Path -LiteralPath $candidate -PathType Container -ErrorAction SilentlyContinue)) { continue }
         if (Test-Path -LiteralPath (Join-Path $candidate 'bin\win_x64\amtrucks.exe')) {
             return $candidate
         }
@@ -101,7 +103,7 @@ try {
 
     Write-Host ''
     Write-Host 'INSTALLATION SUCCESSFUL / 安装成功' -ForegroundColor Green
-    Write-Host 'ATS Reverse Trajectory Predictor v0.10.8' -ForegroundColor Green
+    Write-Host 'ATS Reverse Trajectory Predictor v0.10.9' -ForegroundColor Green
     Write-Host "Package type: $PackageType"
     Write-Host "Game directory: $GameRoot"
     foreach ($target in $runtimeTargets) { Write-Host "Installed DLL: $target" }

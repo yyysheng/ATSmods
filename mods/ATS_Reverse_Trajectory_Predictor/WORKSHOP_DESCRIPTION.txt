@@ -15,7 +15,7 @@
 
 重要安装说明：
 Steam 创意工坊无法把必需的遥测插件 DLL 安装到游戏目录。订阅本模组后，请从 GitHub Release 下载 Workshop 安装包，退出游戏，解压并运行 Install-Workshop.bat：
-https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.10.8
+https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.10.9
 
 安装成功会显示绿色字符，失败会显示红色字符。安装器会把 DLL 安装到 bin\win_x64；如果已有 bin\win_x64\plugins 文件夹，也会同步复制一份。
 
@@ -26,7 +26,7 @@ https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0
 When reverse gear is selected, the plug-in predicts tractor and trailer posture from official telemetry and displays separate blue tractor and orange trailer boundaries over a fixed 5 m path.
 
 Requires the Workshop runtime package from GitHub because Steam Workshop cannot install the telemetry DLL into the game directory:
-https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.10.8
+https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.10.9
 
 Exit ATS, extract the package, run Install-Workshop.bat, enable the mod, and install Reverse Assist Anchor in a cabin accessory slot.
 

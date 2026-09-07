@@ -241,13 +241,6 @@ struct VehicleRenderProbeRecord
 std::mutex vehicle_render_probe_mutex;
 std::vector<VehicleRenderProbeRecord> vehicle_render_probe_records;
 std::atomic<std::uint64_t> player_trailer_object{};
-std::atomic<bool> native_marker_visible{};
-std::atomic<float> native_marker_qw{1.0f};
-std::atomic<float> native_marker_qy{};
-std::atomic<float> native_marker_x{};
-std::atomic<float> native_marker_y{0.35f};
-std::atomic<float> native_marker_z{};
-std::atomic<bool> logged_native_marker_takeover{};
 constexpr std::size_t maximum_prediction_frames = 96;
 struct PredictionFrame
 {
@@ -525,57 +518,11 @@ void __fastcall hooked_vehicle_render_dispatch(
     trace_vehicle_render_dispatch(wrapper, render_context, return_address);
 }
 
-bool unsafe_apply_native_marker_target(std::uint64_t trailer)
-{
-    if (!trailer) return false;
-    const bool visible =
-        native_marker_visible.load(std::memory_order_acquire);
-    const float qw = native_marker_qw.load(std::memory_order_relaxed);
-    const float qy = native_marker_qy.load(std::memory_order_relaxed);
-    const float x = native_marker_x.load(std::memory_order_relaxed);
-    const float y = native_marker_y.load(std::memory_order_relaxed);
-    const float z = native_marker_z.load(std::memory_order_relaxed);
-    __try
-    {
-        // The trailer owns a permanent, collisionless
-        // /model/symbol/loading.pmd instance at +0x1110. +0x1120 gates that
-        // instance. +0x10f8 selects the custom local-placement branch used by
-        // the native updater, while +0x1124 contains a quaternion followed by
-        // XYZ. Without +0x10f8 the updater deliberately ignores this transform
-        // and keeps the marker on the trailer's default coupling anchor.
-        if (*reinterpret_cast<const std::uint64_t *>(trailer + 0x1110) == 0)
-            return false;
-        *reinterpret_cast<std::uint8_t *>(trailer + 0x10f8) =
-            visible ? 1 : 0;
-        *reinterpret_cast<std::uint8_t *>(trailer + 0x1120) =
-            visible ? 1 : 0;
-        auto *local = reinterpret_cast<float *>(trailer + 0x1124);
-        local[0] = qw;
-        local[1] = 0.0f;
-        local[2] = qy;
-        local[3] = 0.0f;
-        local[4] = x;
-        local[5] = y;
-        local[6] = z;
-        return true;
-    }
-    __except (EXCEPTION_EXECUTE_HANDLER)
-    {
-        return false;
-    }
-}
-
+// Preserve game-owned marker visibility, animation and placement.
+// Keep the pass-through hook to retain verified four-hook compatibility profiles.
 void __fastcall hooked_trailer_visual_update(std::uint64_t trailer)
 {
     original_trailer_visual_update(trailer);
-    if (trailer ==
-        player_trailer_object.load(std::memory_order_acquire))
-    {
-        if (unsafe_apply_native_marker_target(trailer) &&
-            !logged_native_marker_takeover.exchange(
-                true, std::memory_order_relaxed))
-            log_line("[reverse-entity] Native trailer ground-marker takeover active.");
-    }
 }
 
 bool unsafe_render_prediction_frames(std::uint64_t trailer,
@@ -1632,8 +1579,6 @@ void remove_model_load_hook()
     driving_started_tick.store(0, std::memory_order_relaxed);
     logged_driving_scene_ready.store(false, std::memory_order_relaxed);
     player_trailer_object.store(0, std::memory_order_relaxed);
-    native_marker_visible.store(false, std::memory_order_relaxed);
-    logged_native_marker_takeover.store(false, std::memory_order_relaxed);
     {
         std::lock_guard frame_lock(prediction_frames_mutex);
         prediction_frames = {};
@@ -2570,12 +2515,11 @@ void update_vehicle_configuration(
     log_line(message.str());
 }
 
-void update_native_marker_target()
+void update_prediction_frame_targets()
 {
-    // The game-owned trailer marker is now only a lifecycle probe.  Rendering
+    // Prediction rendering
     // uses plugin-owned model instances so the prediction survives detaching
     // the trailer and every sampled pose keeps its own transform.
-    native_marker_visible.store(false, std::memory_order_release);
     {
         std::lock_guard lock(prediction_frames_mutex);
         prediction_frames = {};
@@ -2816,7 +2760,7 @@ void update_native_marker_target()
 
 void update_entities()
 {
-    update_native_marker_target();
+    update_prediction_frame_targets();
     if (!engine.enabled || faulted) return;
     if (!telemetry.driving || !telemetry.truck_valid) return;
 
@@ -3025,7 +2969,6 @@ SCSAPI_VOID event_callback(const scs_event_t event,
             telemetry.truck_wheels = {};
             telemetry.trailer_wheels = {};
         }
-        native_marker_visible.store(false, std::memory_order_release);
         driving_started_tick.store(GetTickCount64(),
                                    std::memory_order_release);
         logged_driving_scene_ready.store(false,
@@ -3033,10 +2976,7 @@ SCSAPI_VOID event_callback(const scs_event_t event,
     }
     else if (event == SCS_TELEMETRY_EVENT_paused)
     {
-        native_marker_visible.store(false, std::memory_order_release);
         destroy_prediction_render_models();
-        unsafe_apply_native_marker_target(
-            player_trailer_object.load(std::memory_order_acquire));
         if (!entities.empty() && telemetry.truck_valid)
         {
             const auto hidden = make_local_transform(0.0, -100.0, 0.0, 0.0);

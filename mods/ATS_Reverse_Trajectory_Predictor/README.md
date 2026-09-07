@@ -2,7 +2,7 @@
 
 A world-space reverse posture and trajectory assistant for the exact **American Truck Simulator 1.60.1.8** Windows x64 build.
 
-[Repository folder](https://github.com/yyysheng/ATSmods/tree/main/mods/ATS_Reverse_Trajectory_Predictor) | [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919) | [GitHub release v0.10.8](https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.10.8)
+[Repository folder](https://github.com/yyysheng/ATSmods/tree/main/mods/ATS_Reverse_Trajectory_Predictor) | [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919) | [GitHub release v0.10.9](https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.10.9)
 
 When reverse gear is selected, the plug-in predicts tractor and trailer posture from official telemetry and creates collisionless frame models directly in the game world. The frames are normal Prism3D entities, so every game camera can see the same objects. No camera feed, render pass, depth buffer, constant buffer, or post-process overlay is read or modified.
 
@@ -25,7 +25,7 @@ When reverse gear is selected, the plug-in predicts tractor and trailer posture 
 
 ### Full standalone package
 
-1. Download [`ATS_Reverse_Trajectory_Predictor_v0.10.8_Full.zip`](https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.10.8/ATS_Reverse_Trajectory_Predictor_v0.10.8_Full.zip).
+1. Download [`ATS_Reverse_Trajectory_Predictor_v0.10.9_Full.zip`](https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.10.9/ATS_Reverse_Trajectory_Predictor_v0.10.9_Full.zip).
 2. Exit ATS, extract the package, and run `Install-Full.bat`.
 3. Enable **美卡倒车轨迹预测** in the ATS Mod Manager.
 4. Install `Reverse Assist Anchor` in a cabin accessory slot. The anchor itself is invisible.
@@ -33,13 +33,17 @@ When reverse gear is selected, the plug-in predicts tractor and trailer posture 
 ### Steam Workshop package
 
 1. Subscribe to the [Steam Workshop item](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919).
-2. Download [`ATS_Reverse_Trajectory_Predictor_v0.10.8_Workshop.zip`](https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.10.8/ATS_Reverse_Trajectory_Predictor_v0.10.8_Workshop.zip).
+2. Download [`ATS_Reverse_Trajectory_Predictor_v0.10.9_Workshop.zip`](https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.10.9/ATS_Reverse_Trajectory_Predictor_v0.10.9_Workshop.zip).
 3. Exit ATS, extract the package, and run `Install-Workshop.bat`.
 4. Enable **美卡倒车轨迹预测** in the ATS Mod Manager and install `Reverse Assist Anchor` in a cabin accessory slot.
 
 Steam Workshop cannot install the required telemetry plug-in into the game directory, so the GitHub Workshop package is required. The installer places the DLL in `bin\win_x64` and also copies it to `bin\win_x64\plugins` when that folder exists.
 
 ## Supported game version
+
+When updating, exit ATS and update both the mod resources and runtime DLL, then restart the game. Do not enable the standalone and Workshop copies together. Game-owned trailer markers remain unchanged. ATS 1.61 is not verified.
+
+更新时请退出游戏，同时更新模组资源与运行时 DLL，再重新启动。不要同时启用本地版与工坊版。保留游戏原生挂车提示标记；尚未验证 ATS 1.61。
 
 - American Truck Simulator `1.60.1.8`
 - Windows x64

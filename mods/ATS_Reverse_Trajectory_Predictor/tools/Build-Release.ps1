@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$MsBuild = 'E:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Current\Bin\amd64\MSBuild.exe',
     [string]$AtsExecutable = 'E:\Program Files (x86)\Steam\steamapps\common\American Truck Simulator\bin\win_x64\amtrucks.exe'
 )
@@ -8,7 +8,8 @@ $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $build = Join-Path $root 'build'
 $release = Join-Path $build 'release'
 $staging = Join-Path $build 'package_staging'
-$version = '0.10.8'
+if ([IO.Path]::GetFullPath($staging) -ne "$root\build\package_staging") { throw 'Unsafe staging path.' }
+$version = '0.10.9'
 $modName = 'ATS_Reverse_Trajectory_Predictor_1.60.scs'
 $runtimeName = 'ATSReverseTrajectoryRuntime.dll'
 
@@ -37,7 +38,7 @@ New-Item -ItemType Directory -Path $staging -Force | Out-Null
 $temporaryModZip = Join-Path $release 'ats-mod-content.zip'
 $modPath = Join-Path $release $modName
 Remove-Item -LiteralPath $temporaryModZip,$modPath -Force -ErrorAction SilentlyContinue
-Compress-Archive -Path (Join-Path $root 'src\mod\*') -DestinationPath $temporaryModZip -CompressionLevel Optimal
+& (Join-Path $PSScriptRoot 'PackageMod.ps1') -Destination $temporaryModZip
 Move-Item -LiteralPath $temporaryModZip -Destination $modPath
 
 function New-Package {
