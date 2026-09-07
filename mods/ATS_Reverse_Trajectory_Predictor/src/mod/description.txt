@@ -1,7 +1,21 @@
-美卡倒车轨迹预测 0.10.9，适用于 American Truck Simulator 1.60 原版车辆。
+美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor v0.10.9
 
-在驾驶室“挂件”或“仪表台摆件”槽中安装 Reverse Assist Anchor。挂件模型始终隐藏，仅作为通用资源入口；倒挡时运行模块在世界中分别创建两条蓝色车头扫掠边界和两条橙色挂车扫掠边界，并随方向盘和挂车姿态更新。预测路程固定为 5 米；边界固定追踪车身倒车前缘左右角，避免大折角时换向。运行模块会逐轮读取当前接地状态、提升量和实际转角，只让接地车轮参与有效轴组计算；提升桥仍计入真实车身外廓，但不会错误移动运动学支点。可转向半挂轴按实际轮角合成为等效虚拟轴，适配不同轴距车头、短挂车及多轴挂车。轨迹实体长度已与采样间距匹配；暂停或退出前主动释放预测模型。非倒挡与暂停时隐藏。
+【功能】
+倒挡时在游戏世界中显示两条蓝色车头边界与两条橙色挂车边界，固定预测沿倒车路径未来 5 米的扫掠范围。轨迹随方向盘和挂车姿态更新，并考虑车轮接地、提升状态和可转向轴。非倒挡与暂停时隐藏，保留游戏原生挂车提示标记。
 
-本模组不读取摄像头、后视镜、深度缓冲或渲染画面。
+【使用】
+不需要安装 Reverse Assist Anchor 或其他驾驶室挂件。
+请先退出游戏并安装配套运行时 DLL，再启用本模组、重启游戏。进入驾驶后挂入倒挡即可使用。
+工坊订阅不包含 DLL 安装；工坊用户需从 GitHub 下载 Workshop 运行组件包并运行 Install-Workshop.bat。本地完整包用户运行 Install-Full.bat。不要同时启用本地版和工坊版。
 
-运行时通过 BuildProfile 识别经验证构建，仅校验实际启用的四个 Hook。若游戏构建或任一启用 Hook 不匹配，运行时不会安装任何原生 Hook，并在日志中说明所选配置、校验结果与仅遥测安全降级状态。
+【兼容】
+ATS 1.60 / Windows x64，本机已校验 1.60.1.8。运行时仅在原生 Hook 布局通过校验后启用预测；不匹配时降级为仅遥测模式。不声明支持 1.61。
+
+【说明】
+无碰撞世界模型，不抓取摄像头、后视镜画面或深度缓冲，不附带 dxgi.dll 或 d3d11.dll。
+下载：https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.10.9
+
+English
+World-space reverse guidance with blue tractor and orange trailer boundaries over a fixed 5 m path. Lines appear in reverse gear and hide while paused. No cabin accessory is required.
+Install the runtime DLL, enable the mod and restart ATS. Workshop subscribers must also install the GitHub Workshop runtime package. Do not enable standalone and Workshop copies together.
+ATS 1.60 / Windows x64; locally checked on 1.60.1.8. Native rendering requires a compatible hook layout. ATS 1.61 is not verified.

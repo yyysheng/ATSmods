@@ -1,4 +1,11 @@
-ATS Reverse Trajectory Predictor currently supports American Truck Simulator 1.60 only.
+美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor
 
-此信息包用于提示：美卡倒车轨迹预测当前仅支持 American Truck Simulator 1.60。
+适用于 ATS 1.60 / Windows x64，本机已校验 1.60.1.8。本版不声明支持 1.61。
+需要另行安装 GitHub Workshop 运行组件包。无需安装 Reverse Assist Anchor 或其他驾驶室挂件。
+不要同时启用本地版与工坊版；升级时同时更新资源与 DLL。
 
+ATS 1.60 / Windows x64; locally checked on 1.60.1.8. ATS 1.61 is not verified.
+The GitHub Workshop runtime installer is required. No cabin accessory is needed.
+Update both resources and DLL; do not enable standalone and Workshop copies together.
+
+https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.10.9
