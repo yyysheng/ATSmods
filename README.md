@@ -6,9 +6,9 @@ Each mod is isolated under `mods/` with its own source, documentation, packaging
 
 ## Mods
 
-| Mod | Game version | Source | Download | Workshop |
+| Game version / 游戏版本 | Mod name / Mod 名称 | Mod version / Mod 版本（下载） | Source / 源码 | Workshop / 创意工坊 |
 | --- | --- | --- | --- | --- |
-| ATS Reverse Trajectory Predictor v0.10.9 | 1.60.* | [Project folder](mods/ATS_Reverse_Trajectory_Predictor) | [v0.10.9](https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.10.9) | [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919) |
+| 1.60.* | ATS Reverse Trajectory Predictor | [v0.10.9](https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.10.9) | [Project folder](mods/ATS_Reverse_Trajectory_Predictor) | [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919) |
 
 ## 中文
 
