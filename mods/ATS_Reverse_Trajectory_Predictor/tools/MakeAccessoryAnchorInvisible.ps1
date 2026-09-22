@@ -5,10 +5,12 @@ param(
 $ErrorActionPreference = 'Stop'
 $path = Join-Path $ModelRoot 'accessory_anchor.pmd'
 $visibleMaterial = '/automat/f5/f57370b76733c5aa.mat'
-$invisibleMaterial = '/automat/40/408526e9278658d1.mat'
+$legacyInvisibleMaterial = '/automat/40/408526e9278658d1.mat'
+$invisibleMaterial = '/material/reverse_assist/inv.mat'
 
 $bytes = [IO.File]::ReadAllBytes($path)
 $visibleBytes = [Text.Encoding]::ASCII.GetBytes($visibleMaterial)
+$legacyInvisibleBytes = [Text.Encoding]::ASCII.GetBytes($legacyInvisibleMaterial)
 $invisibleBytes = [Text.Encoding]::ASCII.GetBytes($invisibleMaterial)
 
 function Find-ByteSequence {
@@ -26,14 +28,23 @@ function Find-ByteSequence {
     return -1
 }
 
-$materialOffset = Find-ByteSequence $bytes $visibleBytes
-if ($materialOffset -lt 0) {
-    throw "Expected visible material reference was not found in $path"
-}
-if ($visibleBytes.Length -ne $invisibleBytes.Length) {
+$sourceMaterials = @($visibleBytes, $legacyInvisibleBytes)
+if ($sourceMaterials | Where-Object { $_.Length -ne $invisibleBytes.Length }) {
     throw 'Material paths must have identical byte lengths.'
 }
 
-[Array]::Copy($invisibleBytes, 0, $bytes, $materialOffset, $invisibleBytes.Length)
-[IO.File]::WriteAllBytes($path, $bytes)
-Write-Output $path
+foreach ($sourceMaterial in $sourceMaterials) {
+    $materialOffset = Find-ByteSequence $bytes $sourceMaterial
+    if ($materialOffset -ge 0) {
+        [Array]::Copy($invisibleBytes, 0, $bytes, $materialOffset, $invisibleBytes.Length)
+        [IO.File]::WriteAllBytes($path, $bytes)
+        Write-Output $path
+        exit 0
+    }
+}
+
+if ((Find-ByteSequence $bytes $invisibleBytes) -ge 0) {
+    Write-Output $path
+    exit 0
+}
+throw "Expected material reference was not found in $path"

@@ -18,7 +18,19 @@ try {
 } finally { $zip.Dispose() }
 $zip = [IO.Compression.ZipFile]::OpenRead($Destination)
 try {
-    foreach ($required in @('manifest.sii','model/reverse_assist/accessory_anchor.pmd','model/reverse_assist/sweep_edge.pmd','model/reverse_assist/sweep_edge_blue.pmd')) {
+    foreach ($required in @('manifest.sii','material/reverse_assist/inv.mat','model/reverse_assist/accessory_anchor.pmd','model/reverse_assist/sweep_edge.pmd','model/reverse_assist/sweep_edge_blue.pmd')) {
         if (-not $zip.GetEntry($required)) { throw "Missing asset: $required" }
     }
+    if ($zip.GetEntry('automat/40/408526e9278658d1.mat')) { throw 'Hand-authored invisible material must not be stored under automat/.' }
+    $anchor = $zip.GetEntry('model/reverse_assist/accessory_anchor.pmd')
+    $stream = $anchor.Open()
+    try {
+        $memory = [IO.MemoryStream]::new()
+        try {
+            $stream.CopyTo($memory)
+            $anchorText = [Text.Encoding]::ASCII.GetString($memory.ToArray())
+            if (-not $anchorText.Contains('/material/reverse_assist/inv.mat')) { throw 'Accessory helper model does not reference the validated invisible material.' }
+            if ($anchorText.Contains('/automat/40/408526e9278658d1.mat')) { throw 'Legacy invisible material reference remains in the helper model.' }
+        } finally { $memory.Dispose() }
+    } finally { $stream.Dispose() }
 } finally { $zip.Dispose() }
