@@ -1743,10 +1743,18 @@ bool initialize_engine()
         std::ostringstream message;
         message << "[reverse-entity] Compatibility disabled: no BuildProfile matched sha256="
                 << digest;
-        if (failed_hook <
-            reverse_assist::compatibility::verified_ats_160_1_8_hooks.size())
+        const auto &failed_profile =
+            digest == reverse_assist::compatibility::build_profiles[1].executable_sha256
+                ? reverse_assist::compatibility::build_profiles[1]
+                : reverse_assist::compatibility::build_profiles[0];
+        if (failed_hook < failed_profile.enabled_hooks.size())
             message << " failed-enabled-hook="
-                    << reverse_assist::compatibility::verified_ats_160_1_8_hooks[failed_hook].name;
+                    << failed_profile.enabled_hooks[failed_hook].name;
+        else if (failed_hook - failed_profile.enabled_hooks.size() <
+                 failed_profile.runtime_signatures.size())
+            message << " failed-runtime-helper="
+                    << failed_profile.runtime_signatures[
+                           failed_hook - failed_profile.enabled_hooks.size()].name;
         message << "; native hooks skipped, telemetry-only mode active.";
         log_line(message.str(), SCS_LOG_TYPE_warning);
         return false;
@@ -1766,6 +1774,16 @@ bool initialize_engine()
         verified << "[reverse-entity] Enabled hook verified: " << hook.name
                  << " rva=0x" << std::hex << hook.rva
                  << " signature-bytes=" << std::dec << hook.signature.size();
+        log_line(verified.str());
+    }
+    for (const auto &runtime_signature : active_build_profile->runtime_signatures)
+    {
+        if (runtime_signature.name.empty()) continue;
+        std::ostringstream verified;
+        verified << "[reverse-entity] Runtime helper verified: "
+                 << runtime_signature.name << " rva=0x" << std::hex
+                 << runtime_signature.rva << " signature-bytes=" << std::dec
+                 << runtime_signature.signature.size();
         log_line(verified.str());
     }
 
@@ -1790,7 +1808,9 @@ bool initialize_engine()
     engine.model_load = reinterpret_cast<ModelLoad>(
         engine.base + hook_rva(HookId::model_load));
     const auto &runtime = active_build_profile->runtime;
-    engine.model_activate = reinterpret_cast<ModelActivate>(engine.base + runtime.model_activate);
+    engine.model_activate = runtime.model_activate
+        ? reinterpret_cast<ModelActivate>(engine.base + runtime.model_activate)
+        : nullptr;
     engine.model_transfer = reinterpret_cast<ModelTransfer>(engine.base + runtime.model_transfer);
     engine.model_parameter_init =
         reinterpret_cast<ModelParameterInit>(engine.base + runtime.model_parameter_init);
@@ -1801,12 +1821,17 @@ bool initialize_engine()
         engine.base + runtime.vehicle_addon_finalize);
     engine.render_entry_populate = reinterpret_cast<RenderEntryPopulate>(
         engine.base + runtime.render_entry_populate);
-    engine.final_base_model_create = reinterpret_cast<FinalBaseModelCreate>(
-        engine.base + runtime.final_base_model_create);
-    engine.final_model_create = reinterpret_cast<FinalModelCreate>(
-        engine.base + runtime.final_model_create);
-    engine.final_accessory_insert = reinterpret_cast<FinalAccessoryInsert>(
-        engine.base + runtime.final_accessory_insert);
+    engine.final_base_model_create = runtime.final_base_model_create
+        ? reinterpret_cast<FinalBaseModelCreate>(
+              engine.base + runtime.final_base_model_create)
+        : nullptr;
+    engine.final_model_create = runtime.final_model_create
+        ? reinterpret_cast<FinalModelCreate>(engine.base + runtime.final_model_create)
+        : nullptr;
+    engine.final_accessory_insert = runtime.final_accessory_insert
+        ? reinterpret_cast<FinalAccessoryInsert>(
+              engine.base + runtime.final_accessory_insert)
+        : nullptr;
     engine.set_parent = reinterpret_cast<SetParent>(engine.base + runtime.set_parent);
     engine.set_transform = reinterpret_cast<SetTransform>(engine.base + runtime.set_transform);
     engine.vehicle_render_dispatch =
@@ -1931,11 +1956,14 @@ std::uint64_t *unsafe_create_model(const char *path, std::uint64_t parent,
             return nullptr;
         log_parent_attachment(model, parent);
         native_creation_stage = 5;
-        engine.model_activate(model, 0);
-        if (!validate_process_heap("world activation")) return nullptr;
-        log_diagnostic_once(
-            logged_activate_ok,
-            "[reverse-entity] Single-entity diagnostic: world activation ok.");
+        if (engine.model_activate)
+        {
+            engine.model_activate(model, 0);
+            if (!validate_process_heap("world activation")) return nullptr;
+            log_diagnostic_once(
+                logged_activate_ok,
+                "[reverse-entity] Single-entity diagnostic: world activation ok.");
+        }
         native_creation_stage = 6;
         const auto vtable = *reinterpret_cast<std::uintptr_t **>(model);
         if (!vtable || !vtable[0x140 / sizeof(std::uintptr_t)])
@@ -2004,7 +2032,7 @@ std::uint64_t *unsafe_create_render_model(
         engine.model_parameter_init(model);
         engine.set_transform(reinterpret_cast<std::uint64_t>(model) + 0x10,
                              initial_transform);
-        engine.model_activate(model, 0);
+        if (engine.model_activate) engine.model_activate(model, 0);
 
         const auto vtable = *reinterpret_cast<std::uintptr_t **>(model);
         if (!vtable || !vtable[0x140 / sizeof(std::uintptr_t)])

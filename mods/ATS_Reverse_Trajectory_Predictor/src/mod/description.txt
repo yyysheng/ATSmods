@@ -1,4 +1,4 @@
-美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor v0.10.9
+美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor v0.11.0
 
 【功能】
 倒挡时在游戏世界中显示两条蓝色车头边界与两条橙色挂车边界，固定预测沿倒车路径未来 5 米的扫掠范围。轨迹随方向盘和挂车姿态更新，并考虑车轮接地、提升状态和可转向轴。非倒挡与暂停时隐藏，保留游戏原生挂车提示标记。
@@ -9,13 +9,13 @@
 工坊订阅不包含 DLL 安装；工坊用户需从 GitHub 下载 Workshop 运行组件包并运行 Install-Workshop.bat。本地完整包用户运行 Install-Full.bat。不要同时启用本地版和工坊版。
 
 【兼容】
-ATS 1.60 / Windows x64，本机已校验 1.60.1.8。运行时仅在原生 Hook 布局通过校验后启用预测；不匹配时降级为仅遥测模式。不声明支持 1.61。
+ATS 1.60 / 1.61，Windows x64。本机已分别校验 1.60.1.8 与 1.61.1.1；1.61 配置逐项校验 4 个入口 Hook 和 4 个实体辅助函数。不匹配时跳过原生 Hook，保留仅遥测模式。
 
 【说明】
 无碰撞世界模型，不抓取摄像头、后视镜画面或深度缓冲，不附带 dxgi.dll 或 d3d11.dll。
-下载：https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.10.9
+下载：https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.0
 
 English
 World-space reverse guidance with blue tractor and orange trailer boundaries over a fixed 5 m path. Lines appear in reverse gear and hide while paused. No cabin accessory is required.
 Install the runtime DLL, enable the mod and restart ATS. Workshop subscribers must also install the GitHub Workshop runtime package. Do not enable standalone and Workshop copies together.
-ATS 1.60 / Windows x64; locally checked on 1.60.1.8. Native rendering requires a compatible hook layout. ATS 1.61 is not verified.
+ATS 1.60 / 1.61, Windows x64; locally checked on 1.60.1.8 and 1.61.1.1. The 1.61 profile checks four entry hooks and four runtime helpers. A mismatch skips native hooks and retains telemetry-only mode.

@@ -7,10 +7,10 @@ This is the replacement for the discarded ReShade/6g drawing prototype.
 - Prediction uses the unchanged `reverse_kinematics.hpp`.
 - Output consists of normal Prism3D model entities with world transforms.
 - The supplied model assets intentionally have no `.pmc`, so they do not participate in collision.
-- Native access is selected through ATS-specific `BuildProfile` entries. The
-  exact ATS 1.60.1.8 Steam public hash and byte-compatible ATS 1.60 hook layout
-  are covered.
-- Compatibility validation checks only the four hooks compiled as enabled.
+- Native access is selected through ATS-specific `BuildProfile` entries. Exact
+  Steam public builds ATS 1.60.1.8 and 1.61.1.1 are covered; 1.60 also has a
+  signature-compatible hook-layout fallback.
+- The ATS 1.61 profile checks all four enabled hooks and four runtime helpers.
   Any required mismatch skips hook installation and retains telemetry-only mode.
 
 The runtime loads:

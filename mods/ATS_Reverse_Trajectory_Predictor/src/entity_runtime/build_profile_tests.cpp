@@ -16,6 +16,17 @@
 
 using namespace reverse_assist::compatibility;
 
+#define CHECK(condition)                                                        \
+    do                                                                          \
+    {                                                                           \
+        if (!(condition))                                                       \
+        {                                                                       \
+            std::cerr << "CHECK failed at line " << __LINE__ << ": "           \
+                      << #condition << '\n';                                    \
+            return 1;                                                           \
+        }                                                                       \
+    } while (false)
+
 bool file_signature_matches(const std::vector<std::uint8_t> &file,
                             std::uintptr_t rva,
                             const std::uint8_t *signature,
@@ -52,7 +63,7 @@ bool file_signature_matches(const std::vector<std::uint8_t> &file,
 
 int main(int argc, char **argv)
 {
-    constexpr std::size_t image_size = 0x01600000;
+    constexpr std::size_t image_size = 0x02000000;
     std::vector<std::uint8_t> image(image_size, 0xcc);
     for (const auto &hook : verified_ats_160_1_8_hooks)
         std::copy(hook.signature.begin(), hook.signature.end(),
@@ -68,35 +79,61 @@ int main(int argc, char **argv)
     std::size_t failed = 99;
     const auto *public_build = select_build_profile(
         build_profiles[0].executable_sha256, reader, &exact, &failed);
-    assert(public_build == &build_profiles[0]);
-    assert(exact);
+    CHECK(public_build == &build_profiles[0]);
+    CHECK(exact);
 
     // A second binary digest is supported by the separately declared
     // signature-compatible profile when all enabled hooks remain verified.
     const auto *compatible_build = select_build_profile(
         "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         reader, &exact, &failed);
-    assert(compatible_build == &build_profiles[1]);
-    assert(!exact);
+    CHECK(compatible_build == &build_profiles[2]);
+    CHECK(!exact);
 
     // Bytes at an old, inactive lifecycle helper are intentionally irrelevant.
     image[0x015288d0] ^= 0xff;
     compatible_build = select_build_profile("SECOND-BUILD", reader, &exact, &failed);
-    assert(compatible_build == &build_profiles[1]);
+    CHECK(compatible_build == &build_profiles[2]);
 
     // Any mismatch in an actually enabled hook causes safe rejection.
     const auto &required = verified_ats_160_1_8_hooks[2];
     image[required.rva] ^= 0xff;
-    assert(select_build_profile("UNSUPPORTED", reader, &exact, &failed) == nullptr);
-    assert(failed == 2);
+    CHECK(select_build_profile("UNSUPPORTED", reader, &exact, &failed) == nullptr);
+    CHECK(failed == 2);
 
-    std::cout << "ATS build profile tests passed: exact profile + compatible profile; "
-                 "inactive hook ignored; required mismatch rejected\n";
+    std::vector<std::uint8_t> image161(image_size, 0xcc);
+    for (const auto &hook : verified_ats_161_1_1_hooks)
+        std::copy(hook.signature.begin(), hook.signature.end(),
+                  image161.begin() + hook.rva);
+    for (const auto &runtime : verified_ats_161_1_1_runtime_signatures)
+        std::copy(runtime.signature.begin(), runtime.signature.end(),
+                  image161.begin() + runtime.rva);
+    const auto reader161 = [&](std::uintptr_t rva,
+                               const std::uint8_t *bytes,
+                               std::size_t size) {
+        return rva <= image161.size() && size <= image161.size() - rva &&
+               std::memcmp(image161.data() + rva, bytes, size) == 0;
+    };
+    const auto *profile161 = select_build_profile(
+        build_profiles[1].executable_sha256, reader161, &exact, &failed);
+    CHECK(profile161 == &build_profiles[1] && exact);
+    CHECK(select_build_profile("UNSUPPORTED-1.61", reader161,
+                               &exact, &failed) == nullptr);
+
+    // A mismatched 1.61 entity helper must fail closed even with the exact
+    // executable digest, because every runtime call address is version-bound.
+    image161[verified_ats_161_1_1_runtime_signatures[3].rva] ^= 0xff;
+    CHECK(select_build_profile(build_profiles[1].executable_sha256,
+                                reader161, &exact, &failed) == nullptr);
+    CHECK(failed == verified_ats_161_1_1_hooks.size() + 3);
+
+    std::cout << "ATS build profile tests passed: exact 1.60/1.61 profiles; "
+                 "1.60 compatible fallback; required hook/helper mismatch rejected\n";
 
     if (argc == 3)
     {
         std::ifstream stream(argv[1], std::ios::binary);
-        assert(stream);
+        CHECK(stream.good());
         std::vector<std::uint8_t> executable(
             (std::istreambuf_iterator<char>(stream)),
             std::istreambuf_iterator<char>());
@@ -107,15 +144,15 @@ int main(int argc, char **argv)
             };
         const auto *exact_file = select_build_profile(
             argv[2], file_reader, &exact, &failed);
-        assert(exact_file == &build_profiles[0] && exact);
+        CHECK(exact_file == &build_profiles[1] && exact);
         const auto *alternate_digest = select_build_profile(
             "OFFLINE-SECOND-DIGEST", file_reader, &exact, &failed);
-        assert(alternate_digest == &build_profiles[1] && !exact);
+        CHECK(alternate_digest == nullptr && !exact);
         std::cout << "installed executable verified: " << argv[1]
                   << "; exact=" << exact_file->id
-                  << "; alternate=" << alternate_digest->id
                   << "; enabled-hooks=" << exact_file->enabled_hooks.size()
-                  << '\n';
+                  << "; runtime-helper-checks="
+                  << exact_file->runtime_signatures.size() << '\n';
     }
     return 0;
 }

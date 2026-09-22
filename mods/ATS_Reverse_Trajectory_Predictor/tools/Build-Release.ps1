@@ -9,8 +9,8 @@ $build = Join-Path $root 'build'
 $release = Join-Path $build 'release'
 $staging = Join-Path $build 'package_staging'
 if ([IO.Path]::GetFullPath($staging) -ne "$root\build\package_staging") { throw 'Unsafe staging path.' }
-$version = '0.10.9'
-$modName = 'ATS_Reverse_Trajectory_Predictor_1.60.scs'
+$version = '0.11.0'
+$modName = 'ATS_Reverse_Trajectory_Predictor_1.61.scs'
 $runtimeName = 'ATSReverseTrajectoryRuntime.dll'
 
 if (-not (Test-Path -LiteralPath $MsBuild)) { throw "MSBuild was not found: $MsBuild" }
@@ -24,7 +24,7 @@ if ($LASTEXITCODE -ne 0) { throw 'ATS runtime build failed.' }
 
 & (Join-Path $build 'entity_runtime_tests\BuildProfileTests.exe') `
     $AtsExecutable `
-    '3C702A9F1CADAA8756EAB68B7BAAC70460F8019434B51B877AFBE0FEAD68C7D2'
+    '7C1A3CF292C1CCEDA28E4BCC1FCD285E04CCCD9A3105CAEE81E233388447CAD1'
 if ($LASTEXITCODE -ne 0) { throw 'Installed ATS executable validation failed.' }
 & (Join-Path $build 'world_runtime\KinematicsTests.exe')
 if ($LASTEXITCODE -ne 0) { throw 'Reverse kinematics tests failed.' }

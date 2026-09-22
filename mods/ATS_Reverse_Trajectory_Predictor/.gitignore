@@ -1,4 +1,6 @@
 /build/
+/workshop/160_content/
+/workshop/161_content/
 /src/entity_runtime/obj/
 /src/entity_runtime/obj_profile_tests/
 /src/world_runtime/obj/

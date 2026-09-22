@@ -1,8 +1,8 @@
 # ATS Reverse Trajectory Predictor
 
-A world-space reverse posture and trajectory assistant for **American Truck Simulator 1.60** on Windows x64, with verified native build compatibility checks.
+A world-space reverse guidance mod for **American Truck Simulator 1.60 and 1.61** on Windows x64.
 
-[Repository folder](https://github.com/yyysheng/ATSmods/tree/main/mods/ATS_Reverse_Trajectory_Predictor) | [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919) | [Download v0.10.9](https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.10.9)
+[Repository folder](https://github.com/yyysheng/ATSmods/tree/main/mods/ATS_Reverse_Trajectory_Predictor) | [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919) | [Download v0.11.0](https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.0)
 
 When reverse gear is selected, the plug-in predicts tractor and trailer posture from SCS telemetry and displays collisionless lines directly in the game world. The lines follow steering and trailer articulation; they are not a screen overlay.
 
@@ -13,10 +13,10 @@ When reverse gear is selected, the plug-in predicts tractor and trailer posture 
 - Two blue tractor boundaries and two orange trailer boundaries over a fixed 5 m prediction path.
 - Wheel-contact-aware prediction for liftable and steerable axles and different wheelbases.
 - Lines appear in reverse gear and hide outside reverse gear or while paused.
-- World-space models visible through normal game rendering, including interior, exterior and mirror views.
+- World-space models use normal game rendering, including interior, exterior and mirror views.
 - Game-owned trailer guide markers remain unchanged.
 - Independent prediction models: no Reverse Assist Anchor or other cabin accessory installation is required.
-- Exact-build and compatible-hook-layout profiles; native hooks are skipped if compatibility checks fail.
+- Native hooks are enabled only for verified executable profiles; mismatches leave telemetry-only mode.
 - No camera, mirror-image or depth-buffer capture; no bundled ReShade, `dxgi.dll` or `d3d11.dll`.
 
 ## Installation
@@ -25,7 +25,7 @@ Choose **one** resource source: Full standalone or Steam Workshop. Do not enable
 
 ### Full standalone package
 
-1. Download [ATS_Reverse_Trajectory_Predictor_v0.10.9_Full.zip](https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.10.9/ATS_Reverse_Trajectory_Predictor_v0.10.9_Full.zip).
+1. Download [ATS_Reverse_Trajectory_Predictor_v0.11.0_Full.zip](https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.0/ATS_Reverse_Trajectory_Predictor_v0.11.0_Full.zip).
 2. Fully exit ATS, extract the ZIP, and run `Install-Full.bat`.
 3. Enable **美卡倒车轨迹预测** in the ATS Mod Manager, then restart the game.
 4. Enter a driving session and select reverse gear. No cabin accessory is needed.
@@ -33,7 +33,7 @@ Choose **one** resource source: Full standalone or Steam Workshop. Do not enable
 ### Steam Workshop package
 
 1. Subscribe to the [Steam Workshop item](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919) and let Steam download its content.
-2. Download [ATS_Reverse_Trajectory_Predictor_v0.10.9_Workshop.zip](https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.10.9/ATS_Reverse_Trajectory_Predictor_v0.10.9_Workshop.zip).
+2. Download [ATS_Reverse_Trajectory_Predictor_v0.11.0_Workshop.zip](https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.0/ATS_Reverse_Trajectory_Predictor_v0.11.0_Workshop.zip).
 3. Fully exit ATS, extract the ZIP, and run `Install-Workshop.bat`.
 4. Enable the Workshop item in the Mod Manager, disable any standalone copy, then restart the game.
 
@@ -45,12 +45,13 @@ The installer copies `ATSReverseTrajectoryRuntime.dll` to `bin\win_x64` and also
 
 Success is shown in green; failure is shown in red. The installer does not modify `dxgi.dll` or `d3d11.dll`. When updating, exit ATS, update both resources and runtime DLL, and restart.
 
-## Supported game version
+## Supported game versions
 
-- ATS 1.60, Windows x64; locally verified executable: **1.60.1.8**.
-- Other builds require a matching enabled-hook layout. A mismatch disables native prediction rendering and leaves telemetry-only mode.
-- ATS 1.61 and older branches such as 1.59 are not covered by this release.
-- Automated build, compatibility and kinematics checks passed; in-game visual acceptance of v0.10.9 has not been performed.
+- ATS 1.60.1.8 and 1.61.1.1, Windows x64, have exact executable profiles verified locally.
+- ATS 1.60 builds with the same verified hook signatures can use the compatibility profile. Other builds are not claimed as supported.
+- ATS 1.61.1.1 checks all four enabled entry hooks and four required entity helper signatures before enabling native hooks.
+- An unknown executable or signature mismatch skips native hooks and leaves telemetry-only mode.
+- Automated build, executable-profile and kinematics checks passed. In-game visual acceptance of v0.11.0 has not been performed.
 
 ## 中文说明
 
@@ -83,7 +84,12 @@ Success is shown in green; failure is shown in red. The installer does not modif
 
 安装成功显示绿色字符，失败显示红色字符。DLL 始终复制到 `bin\win_x64`；已有 `plugins` 子文件夹时，也会同步复制一份。升级时请同时更新资源与 DLL。
 
-兼容范围为 ATS 1.60、Windows x64，本机已校验 1.60.1.8；其他构建必须通过原生 Hook 校验。本版不声明支持 1.61 或 1.59。自动化检查已通过，尚未完成 v0.10.9 的游戏内画面实测。
+### 兼容版本
+
+- 本机已分别按精确可执行文件配置校验 ATS 1.60.1.8 与 1.61.1.1（Windows x64）。
+- ATS 1.60 中与已验证 Hook 签名一致的构建可使用兼容配置；不声明支持其他未验证构建。
+- ATS 1.61.1.1 启用前会校验 4 个入口 Hook 和 4 个必需实体辅助函数；可执行文件未知或签名不匹配时，跳过原生 Hook 并保留仅遥测模式。
+- 自动构建、可执行文件配置与运动学检查已通过；尚未完成 v0.11.0 的游戏内画面验收。
 
 ## Credits
 
@@ -91,4 +97,4 @@ Success is shown in green; failure is shown in red. The installer does not modif
 - Telemetry API: SCS SDK
 - Hook library: MinHook
 
-[Third-party notices](THIRD_PARTY_NOTICES.md) | [Build instructions](BUILDING.md) | [Verification](VERIFICATION_v0.10.9.md)
+[Third-party notices](THIRD_PARTY_NOTICES.md) | [Build instructions](BUILDING.md) | [Verification](VERIFICATION_v0.11.0.md)

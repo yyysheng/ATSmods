@@ -17,9 +17,28 @@ Expand a game version, mod, then release to view its links.
 <summary>ATS Reverse Trajectory Predictor</summary>
 
 <details>
-<summary>v0.10.9</summary>
+<summary>v0.11.0</summary>
 
-- [下载 / Download](https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.10.9)
+- [下载 / Download](https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.0)
+- [源码 / Source](mods/ATS_Reverse_Trajectory_Predictor)
+- [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919)
+
+</details>
+
+</details>
+
+</details>
+
+<details>
+<summary>游戏版本 1.61.*</summary>
+
+<details>
+<summary>ATS Reverse Trajectory Predictor</summary>
+
+<details>
+<summary>v0.11.0</summary>
+
+- [下载 / Download](https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.0)
 - [源码 / Source](mods/ATS_Reverse_Trajectory_Predictor)
 - [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919)
 
