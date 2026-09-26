@@ -1,57 +1,61 @@
-[h1]v0.11.0 — ATS 1.61.x compatibility / 美卡 1.61.x 适配[/h1]
-[b]Please update both the Workshop content and the native runtime. / 请同时更新工坊资源与运行组件。[/b]
+[h1]美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor[/h1]
+[b]American Truck Simulator only · v0.11.1 · ATS 1.60.x / 1.61.x · Windows x64[/b]
 
-[h1]English[/h1]
-Reverse Trajectory Predictor adds world-space reverse guidance: two blue tractor boundaries and two orange trailer boundaries over a fixed 5 m prediction path. The curves follow steering and articulation, using wheel contact, lift state and steerable axle angles. Prediction lines appear only in reverse gear and hide while paused.
+While reversing, this mod draws the predicted tractor and trailer sweep path directly in the ATS game world. Blue lines mark the tractor boundaries; orange lines mark the trailer boundaries. The fixed prediction distance is 5 m and the path responds to steering, trailer angle, wheel contact, lift state and steerable axles.
 
-[b]What changed in v0.11.0[/b]
+[b]Game scope:[/b] This Workshop item is for American Truck Simulator and is named “美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor.” “Reverse Posture Assistant For ETS2 1.61.x” is a separate mod for Euro Truck Simulator 2.
+
+[b]Features[/b]
 [list]
-[*]Adds ATS 1.61.x with an exact profile checked against the 1.61.1.1 Steam public executable; validates its four entry hooks and four entity helpers.
-[*]Keeps the exact ATS 1.60.1.8 profile and a signature-compatible fallback for other matching ATS 1.60 builds.
-[*]Preserves the original game trailer marker and telemetry-only fallback for unknown or mismatched executable builds.
+[*]World-space prediction lines appear in reverse gear and hide while paused or outside reverse gear.
+[*]No cabin accessory is required. The game's trailer guide markers remain unchanged.
+[*]No camera, mirror-image or depth-buffer capture; no bundled ReShade, dxgi.dll or d3d11.dll.
 [/list]
 
-[b]Installation / upgrade[/b]
-1. Exit ATS and let Steam download this item's latest content.
-2. Download v0.11.0 Runtime for Workshop, extract it and run Install-Workshop.bat.
-[url=https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.0/ATS_Reverse_Trajectory_Predictor_v0.11.0_Workshop.zip]Download Runtime for Workshop v0.11.0[/url]
-3. Enable this Workshop item in the Mod Manager. Disable older local copies of Reverse Trajectory Predictor, then restart the game.
-
-[b]A Workshop subscription alone cannot install the required DLL. Update the runtime DLL and Workshop content together.[/b]
-For standalone installation, use the Full package instead of subscribing; do not enable both copies:
-[url=https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.0]v0.11.0 downloads and release notes[/url]
-If Steam hides the link, search GitHub for yyysheng/ATSmods and open Releases.
-
-Compatibility: ATS 1.61.* and 1.60.*, Windows x64. Exact profiles are checked against ATS 1.61.1.1 and 1.60.1.8; compatible ATS 1.60 builds require matching hook signatures. Unverified builds use telemetry-only mode. In-game visual acceptance of v0.11.0 has not been performed. No camera, mirror or depth-buffer capture; no bundled dxgi.dll or d3d11.dll. No cabin accessory is required.
-
-[h1]中文[/h1]
-美卡倒车轨迹预测直接在游戏世界中显示两条蓝色车头边界与两条橙色挂车边界，固定预测沿倒车路径未来 5 米的扫掠范围。轨迹随方向盘、车头与挂车夹角变化，并考虑实际车轮接地、提升状态和可转向轴。预测线仅在倒挡时显示，暂停时隐藏。
-
-[b]v0.11.0 更新[/b]
+[b]v0.11.1 · ATS 1.61.2.0 update[/b]
 [list]
-[*]新增 ATS 1.61.x 精确配置，对照 Steam 正式版 1.61.1.1 检查，并验证四个入口 Hook 与四个实体辅助函数。
-[*]保留 ATS 1.60.1.8 精确配置，以及适用于 Hook 签名匹配构建的 ATS 1.60 兼容配置。
-[*]保留游戏原生挂车标记；未知或签名不匹配的构建会安全降级为仅遥测模式。
+[*]Adds an exact profile for the installed ATS 1.61.2.0 Steam executable. Four entry hooks and four required entity helpers are checked before native hooks are enabled.
+[*]Retains the exact ATS 1.61.1.1 and 1.60.1.8 profiles, plus the ATS 1.60 signature-compatible fallback.
+[*]Unknown or modified executables skip native hooks and keep telemetry-only mode.
 [/list]
 
-[b]安装与升级[/b]
-1. 完全退出美卡，等待 Steam 下载此工坊条目的最新资源。
-2. 下载 v0.11.0 Runtime for Workshop，解压后运行 Install-Workshop.bat。
-[url=https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.0/ATS_Reverse_Trajectory_Predictor_v0.11.0_Workshop.zip]下载 v0.11.0 工坊运行组件[/url]
-3. 在模组管理器中启用此工坊条目，停用旧版本地倒车轨迹预测模组，然后重新启动游戏。
+[b]Workshop installation / update[/b]
+1. Subscribe to this ATS Workshop item and let Steam download its resources.
+2. Download the [url=https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.1/ATS_Reverse_Trajectory_Predictor_v0.11.1_Workshop.zip]v0.11.1 Workshop runtime package[/url]. Exit ATS, extract the ZIP and run Install-Workshop.bat.
+3. Enable this Workshop item in the Mod Manager, disable any standalone copy, then restart ATS.
 
-[b]工坊订阅无法自动安装所需 DLL；运行组件与工坊资源需要同时更新。[/b]
-独立安装请使用 Full 完整包，无需再订阅工坊；不要同时启用本地版与工坊版：
-[url=https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.0]v0.11.0 下载与更新说明[/url]
-如 Steam 隐藏链接，请前往 GitHub 搜索 yyysheng/ATSmods 并打开 Releases。
+[b]A Workshop subscription does not install the runtime DLL.[/b] Steam supplies the mod resources; the GitHub package installs the DLL. For standalone use, download the [url=https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.1/ATS_Reverse_Trajectory_Predictor_v0.11.1_Full.zip]Full package[/url] instead. Do not enable the Full and Workshop copies together.
 
-兼容范围：ATS 1.61.* 与 1.60.*、Windows x64。精确配置对照 ATS 1.61.1.1 与 1.60.1.8 检查；ATS 1.60 兼容构建需匹配 Hook 签名，其他构建仅遥测模式。尚未完成 v0.11.0 游戏内画面验收。不抓取摄像头、后视镜或深度缓冲，不附带 dxgi.dll 或 d3d11.dll；不需要驾驶室挂件。
+[b]Compatibility:[/b] ATS 1.61.2.0 and 1.61.1.1 have exact Windows x64 profiles. ATS 1.60.1.8 has an exact profile; other ATS 1.60 builds require matching enabled-hook signatures. Unknown builds remain in telemetry-only mode. Automated build/profile and kinematics checks are recorded in the release documentation; in-game visual acceptance of v0.11.1 has not been performed.
 
-[h1]Other information / 其他信息[/h1]
-Euro Truck Simulator 2 version / 欧卡 2 版本：
-https://steamcommunity.com/sharedfiles/filedetails/?id=3776052935
-Older game versions such as 1.59 are outside the current support scope.
-当前不支持 1.59 等更旧游戏版本。
-国内用户反馈也可通过抖音号：zhs_flute。
+[url=https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.1]Downloads and release notes · v0.11.1[/url] · [url=https://github.com/yyysheng/ATSmods/tree/main/mods/ATS_Reverse_Trajectory_Predictor]Source and documentation[/url]
 
-[url=https://github.com/yyysheng/ATSmods/tree/main/mods/ATS_Reverse_Trajectory_Predictor]Source code and documentation / 源码与说明[/url]
+[h1]简体中文[/h1]
+倒车时，本模组直接在美卡游戏世界中绘制车头与挂车的预测扫掠路径：蓝线表示车头边界，橙线表示挂车边界，固定预测距离为 5 米。轨迹随方向盘、挂车角度、车轮接地、提升状态及可转向轴变化。
+
+[b]游戏范围：[/b]本条目仅适用于 American Truck Simulator，名称为“美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor”。“Reverse Posture Assistant For ETS2 1.61.x”是欧卡 2 的另一个独立模组，与本美卡条目不同。
+
+[b]功能特点[/b]
+[list]
+[*]只在倒挡时显示预测线；暂停或离开倒挡时隐藏。
+[*]不需要驾驶室挂件，保留游戏原生挂车提示标记。
+[*]不抓取摄像头、后视镜画面或深度缓冲，不附带 ReShade、dxgi.dll 或 d3d11.dll。
+[/list]
+
+[b]v0.11.1 · ATS 1.61.2.0 适配[/b]
+[list]
+[*]新增 ATS 1.61.2.0 Steam 可执行文件精确配置。启用原生 Hook 前检查 4 个入口 Hook 和 4 个必需实体辅助函数。
+[*]保留 ATS 1.61.1.1、1.60.1.8 精确配置，以及 ATS 1.60 签名兼容回退。
+[*]未知或修改过的可执行文件会跳过原生 Hook，仅保留遥测模式。
+[/list]
+
+[b]工坊安装与升级[/b]
+1. 订阅本美卡工坊条目，等待 Steam 下载模组资源。
+2. 下载 [url=https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.1/ATS_Reverse_Trajectory_Predictor_v0.11.1_Workshop.zip]v0.11.1 工坊运行组件包[/url]。退出美卡、解压并运行 Install-Workshop.bat。
+3. 在模组管理器中启用本工坊条目，停用本地副本，然后重新启动美卡。
+
+[b]仅订阅工坊不会自动安装 DLL。[/b]Steam 提供模组资源，GitHub 运行组件包安装 DLL。本地独立安装请改用 [url=https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.1/ATS_Reverse_Trajectory_Predictor_v0.11.1_Full.zip]Full 完整包[/url]，不要同时启用本地版和工坊版。
+
+[b]兼容范围：[/b]ATS 1.61.2.0、1.61.1.1 均有 Windows x64 精确配置；ATS 1.60.1.8 有精确配置，其他 ATS 1.60 构建需匹配 Hook 签名。未知构建仅运行遥测模式。自动构建、配置与运动学检查记录见发布文档；尚未完成 v0.11.1 游戏内画面验收。
+
+[url=https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.1]v0.11.1 下载与更新说明[/url] · [url=https://github.com/yyysheng/ATSmods/tree/main/mods/ATS_Reverse_Trajectory_Predictor]源码与完整说明[/url]

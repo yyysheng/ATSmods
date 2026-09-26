@@ -1,4 +1,4 @@
-﻿param(
+param(
     [ValidateSet('Full', 'Workshop')]
     [string]$PackageType = 'Full',
     [switch]$VerifyOnly,
@@ -103,7 +103,7 @@ try {
 
     Write-Host ''
     Write-Host 'INSTALLATION SUCCESSFUL / 安装成功' -ForegroundColor Green
-    Write-Host 'ATS Reverse Trajectory Predictor v0.11.0' -ForegroundColor Green
+    Write-Host 'ATS Reverse Trajectory Predictor v0.11.1' -ForegroundColor Green
     Write-Host "Package type: $PackageType"
     Write-Host "Game directory: $GameRoot"
     foreach ($target in $runtimeTargets) { Write-Host "Installed DLL: $target" }

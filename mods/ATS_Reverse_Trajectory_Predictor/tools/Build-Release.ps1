@@ -1,4 +1,4 @@
-﻿param(
+param(
     [string]$MsBuild = 'E:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Current\Bin\amd64\MSBuild.exe',
     [string]$AtsExecutable = 'E:\Program Files (x86)\Steam\steamapps\common\American Truck Simulator\bin\win_x64\amtrucks.exe'
 )
@@ -9,7 +9,7 @@ $build = Join-Path $root 'build'
 $release = Join-Path $build 'release'
 $staging = Join-Path $build 'package_staging'
 if ([IO.Path]::GetFullPath($staging) -ne "$root\build\package_staging") { throw 'Unsafe staging path.' }
-$version = '0.11.0'
+$version = '0.11.1'
 $modName = 'ATS_Reverse_Trajectory_Predictor_1.61.scs'
 $runtimeName = 'ATSReverseTrajectoryRuntime.dll'
 
@@ -24,7 +24,7 @@ if ($LASTEXITCODE -ne 0) { throw 'ATS runtime build failed.' }
 
 & (Join-Path $build 'entity_runtime_tests\BuildProfileTests.exe') `
     $AtsExecutable `
-    '7C1A3CF292C1CCEDA28E4BCC1FCD285E04CCCD9A3105CAEE81E233388447CAD1'
+    '9DF9745ABEE9C698919B572A1E6C645C00E4F37218A90498589C0101A391740C'
 if ($LASTEXITCODE -ne 0) { throw 'Installed ATS executable validation failed.' }
 & (Join-Path $build 'world_runtime\KinematicsTests.exe')
 if ($LASTEXITCODE -ne 0) { throw 'Reverse kinematics tests failed.' }

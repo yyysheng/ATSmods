@@ -1,8 +1,8 @@
 SiiNunit
 {
 mod_package : .package_name {
- package_version: "0.11.0"
- display_name: "美卡倒车轨迹预测"
+ package_version: "0.11.1"
+ display_name: "美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor"
  author: "yyysheng"
  category[]: "interior"
  icon: "mod_icon.jpg"

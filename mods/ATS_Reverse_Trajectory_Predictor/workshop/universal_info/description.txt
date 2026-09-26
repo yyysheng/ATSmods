@@ -1,11 +1,11 @@
-美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor
+美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor v0.11.1
 
-适用于 ATS 1.60 / 1.61 / Windows x64，本机已分别校验 1.60.1.8 与 1.61.1.1。
-需要另行安装 GitHub Workshop 运行组件包。无需安装 Reverse Assist Anchor 或其他驾驶室挂件。
-不要同时启用本地版与工坊版；升级时同时更新资源与 DLL。
+仅适用于 American Truck Simulator。欧卡 2 的 Reverse Posture Assistant 是另一款独立模组。
+ATS 1.60 / 1.61，Windows x64。已校验 ATS 1.60.1.8、1.61.1.1 与 1.61.2.0。
+需要另行安装 GitHub Workshop 运行组件包。无需驾驶室挂件。不要同时启用本地版与工坊版。
 
-ATS 1.60 / 1.61 / Windows x64; locally checked on 1.60.1.8 and 1.61.1.1.
-The GitHub Workshop runtime installer is required. No cabin accessory is needed.
-Update both resources and DLL; do not enable standalone and Workshop copies together.
+American Truck Simulator only; separate from the ETS2 Reverse Posture Assistant.
+Windows x64. Exact executable profiles checked on ATS 1.60.1.8, 1.61.1.1 and 1.61.2.0.
+Install the GitHub Workshop runtime package. No cabin accessory is needed. Do not enable standalone and Workshop copies together.
 
-https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.0
+https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.1

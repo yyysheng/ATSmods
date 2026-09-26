@@ -26,7 +26,7 @@ foreach ($folderName in $versionFolders) {
 
     $manifestPath = Join-Path $destination 'manifest.sii'
     $manifest = [IO.File]::ReadAllText($manifestPath)
-    $manifest = [regex]::Replace($manifest, 'package_version\s*:\s*"\d+\.\d+\.\d+"', 'package_version: "0.11.0"')
+    $manifest = [regex]::Replace($manifest, 'package_version\s*:\s*"\d+\.\d+\.\d+"', 'package_version: "0.11.1"')
     $manifest = [regex]::Replace($manifest, '(?m)^\s*(?:display_name\s*:|compatible_versions\[\]\s*:).*(?:\r?\n|$)', '')
     [IO.File]::WriteAllText($manifestPath, $manifest, $utf8NoBom)
 }
@@ -42,7 +42,7 @@ if ($unexpected) { throw "Workshop root may contain only versions.sii and packag
 
 foreach ($folderName in $versionFolders) {
     $manifest = Get-Content -Raw (Join-Path (Join-Path $workshopRoot $folderName) 'manifest.sii')
-    if ($manifest -notmatch 'package_version\s*:\s*"0\.11\.0"') { throw "Version was not updated in $folderName" }
+    if ($manifest -notmatch 'package_version\s*:\s*"0\.11\.1"') { throw "Version was not updated in $folderName" }
     if ($manifest -match '(?m)^\s*(?:display_name\s*:|compatible_versions\[\]\s*:)') { throw "Uploader-managed fields remain in $folderName/manifest.sii" }
 }
 

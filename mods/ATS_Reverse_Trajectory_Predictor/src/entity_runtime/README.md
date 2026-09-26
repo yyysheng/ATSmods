@@ -8,9 +8,9 @@ This is the replacement for the discarded ReShade/6g drawing prototype.
 - Output consists of normal Prism3D model entities with world transforms.
 - The supplied model assets intentionally have no `.pmc`, so they do not participate in collision.
 - Native access is selected through ATS-specific `BuildProfile` entries. Exact
-  Steam public builds ATS 1.60.1.8 and 1.61.1.1 are covered; 1.60 also has a
-  signature-compatible hook-layout fallback.
-- The ATS 1.61 profile checks all four enabled hooks and four runtime helpers.
+  Steam public builds ATS 1.60.1.8, 1.61.1.1 and 1.61.2.0 are covered; 1.60
+  also has a signature-compatible hook-layout fallback.
+- The ATS 1.61 profiles check all four enabled hooks and four runtime helpers.
   Any required mismatch skips hook installation and retains telemetry-only mode.
 
 The runtime loads:
