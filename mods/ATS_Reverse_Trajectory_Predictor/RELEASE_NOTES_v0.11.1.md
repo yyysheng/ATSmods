@@ -1,4 +1,4 @@
-# 美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor v0.11.1
+# Reverse Posture Assistant For ATS 1.61.x v0.11.1
 
 Adds an exact runtime profile for the current ATS 1.61.2.0 Steam executable. The profile checks all four enabled entry hooks and four required entity helpers before native hooks are installed.
 
@@ -6,14 +6,14 @@ The exact ATS 1.61.1.1 and 1.60.1.8 profiles remain available. Other ATS 1.60 bu
 
 ## Full package
 
-1. Download `ATS_Reverse_Trajectory_Predictor_v0.11.1_Full.zip` from the release assets.
+1. Download `Reverse_Posture_Assistant_For_ATS_v0.11.1_Full.zip` from the release assets.
 2. Exit ATS, extract the ZIP, and run `Install-Full.bat`.
-3. Enable **美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor** in the Mod Manager and restart ATS.
+3. Enable **Reverse Posture Assistant For ATS 1.61.x** in the Mod Manager and restart ATS.
 
 ## Workshop package
 
 1. Subscribe to the [ATS Workshop item](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919) and let Steam download its resources.
-2. Download `ATS_Reverse_Trajectory_Predictor_v0.11.1_Workshop.zip` from the release assets.
+2. Download `Reverse_Posture_Assistant_For_ATS_v0.11.1_Workshop.zip` from the release assets.
 3. Exit ATS, extract the ZIP, and run `Install-Workshop.bat`.
 4. Enable the Workshop item and disable any standalone copy before restarting ATS.
 

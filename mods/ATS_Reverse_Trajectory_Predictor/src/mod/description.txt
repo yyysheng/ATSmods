@@ -1,4 +1,4 @@
-美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor v0.11.1
+Reverse Posture Assistant For ATS 1.61.x v0.11.1
 
 仅适用于 American Truck Simulator。倒挡时在游戏世界中显示蓝色车头边界和橙色挂车边界，预测沿倒车路径未来 5 米的扫掠范围。轨迹随方向盘和挂车姿态变化，并考虑车轮接地、提升状态和可转向轴。
 

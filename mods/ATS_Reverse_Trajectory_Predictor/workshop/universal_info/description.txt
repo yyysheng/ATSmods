@@ -1,4 +1,4 @@
-美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor v0.11.1
+Reverse Posture Assistant For ATS 1.61.x v0.11.1
 
 仅适用于 American Truck Simulator。欧卡 2 的 Reverse Posture Assistant 是另一款独立模组。
 ATS 1.60 / 1.61，Windows x64。已校验 ATS 1.60.1.8、1.61.1.1 与 1.61.2.0。

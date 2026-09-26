@@ -2,7 +2,7 @@
 
 American Truck Simulator mods maintained by [yyysheng](https://github.com/yyysheng).
 
-## 美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor
+## Reverse Posture Assistant For ATS 1.61.x
 
 An **American Truck Simulator only** reverse trajectory predictor for Windows x64. It draws the predicted tractor and trailer sweep path in the game world while reversing.
 
@@ -17,7 +17,7 @@ Unknown executables keep telemetry available but do not enable native hooks. In-
 - [Steam Workshop item](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919)
 - [Latest release downloads](https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.1)
 
-This ATS project is separate from the ETS2 mod named “Reverse Posture Assistant.”
+This ATS project is separate from the ETS2 mod titled “Reverse Posture Assistant For ETS2 1.61.x.”
 
 ## Repository layout
 
@@ -27,7 +27,7 @@ Each mod is isolated under `mods/` with its own source, documentation, Workshop 
 
 这是 [yyysheng](https://github.com/yyysheng) 维护的 American Truck Simulator 模组仓库。
 
-**美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor** 是仅适用于美卡的 Windows x64 倒车轨迹预测模组，在游戏世界中显示车头与挂车的预测扫掠路径。
+**Reverse Posture Assistant For ATS 1.61.x** 是仅适用于美卡的 Windows x64 倒车轨迹预测模组，在游戏世界中显示车头与挂车的预测扫掠路径。
 
 | 美卡版本分支 | 已验证的可执行文件范围 | 发布版本 |
 | --- | --- | --- |
@@ -40,4 +40,4 @@ Each mod is isolated under `mods/` with its own source, documentation, Workshop 
 - [Steam 创意工坊条目](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919)
 - [最新版下载](https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.1)
 
-本项目是美卡专用模组，与欧卡 2 的 “Reverse Posture Assistant” 是不同条目。
+本项目是美卡专用模组，与欧卡 2 的 “Reverse Posture Assistant” 是不同游戏的独立工坊条目。

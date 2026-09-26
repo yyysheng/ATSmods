@@ -1,12 +1,12 @@
-# 美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor
+# Reverse Posture Assistant For ATS 1.61.x
 
 An **American Truck Simulator only** reverse guidance mod for Windows x64. The current release is **v0.11.1**.
 
-![ATS Reverse Trajectory Predictor Workshop cover](assets/workshop_cover.jpg)
+![Reverse Posture Assistant For ATS 1.61.x Workshop cover](assets/workshop_cover.jpg)
 
 [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919) · [Latest release](https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.1) · [Source folder](https://github.com/yyysheng/ATSmods/tree/main/mods/ATS_Reverse_Trajectory_Predictor)
 
-**Game scope:** This is the ATS mod **美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor**. “Reverse Posture Assistant For ETS2 1.61.x” is a separate ETS2 mod and Workshop item.
+**Game scope:** This is the ATS mod **Reverse Posture Assistant For ATS 1.61.x**. “Reverse Posture Assistant For ETS2 1.61.x” is the separate ETS2 mod and Workshop item.
 
 When reverse gear is selected, the runtime predicts tractor and trailer posture from SCS telemetry and draws collisionless guide lines directly in the game world. The lines follow steering and trailer articulation; they are not a screen overlay.
 
@@ -27,15 +27,15 @@ Choose **one** mod source: Full standalone or Steam Workshop. Do not enable both
 
 ### Full standalone package
 
-1. Download [ATS_Reverse_Trajectory_Predictor_v0.11.1_Full.zip](https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.1/ATS_Reverse_Trajectory_Predictor_v0.11.1_Full.zip).
+1. Download [Reverse_Posture_Assistant_For_ATS_v0.11.1_Full.zip](https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.1/Reverse_Posture_Assistant_For_ATS_v0.11.1_Full.zip).
 2. Fully exit ATS, extract the ZIP, and run `Install-Full.bat`.
-3. Enable **美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor** in the ATS Mod Manager, then restart the game.
+3. Enable **Reverse Posture Assistant For ATS 1.61.x** in the ATS Mod Manager, then restart the game.
 4. Enter a driving session and select reverse gear. No cabin accessory is needed.
 
 ### Steam Workshop package
 
 1. Subscribe to the [ATS Workshop item](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919) and let Steam download its content.
-2. Download [ATS_Reverse_Trajectory_Predictor_v0.11.1_Workshop.zip](https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.1/ATS_Reverse_Trajectory_Predictor_v0.11.1_Workshop.zip).
+2. Download [Reverse_Posture_Assistant_For_ATS_v0.11.1_Workshop.zip](https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.1/Reverse_Posture_Assistant_For_ATS_v0.11.1_Workshop.zip).
 3. Fully exit ATS, extract the ZIP, and run `Install-Workshop.bat`.
 4. Enable the Workshop item in the Mod Manager, disable any standalone copy, then restart ATS.
 
@@ -53,7 +53,7 @@ The installer copies `ATSReverseTrajectoryRuntime.dll` to `bin\win_x64` and also
 
 ## 中文说明
 
-**美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor** 是仅适用于 American Truck Simulator 的模组，与欧卡 2 工坊中的 “Reverse Posture Assistant For ETS2 1.61.x” 是不同游戏、不同名称的独立条目。
+**Reverse Posture Assistant For ATS 1.61.x** 是仅适用于 American Truck Simulator 的模组，与欧卡 2 工坊中的 “Reverse Posture Assistant For ETS2 1.61.x” 是游戏不同、工坊条目不同的独立模组。
 
 倒挡时，模组根据 SCS 遥测在游戏世界中显示车头与挂车的预测扫掠边界：蓝色代表车头，橙色代表挂车，沿倒车路径预测固定 5 米。轨迹随方向盘和挂车夹角变化，并考虑车轮接地、提升状态与可转向轴。非倒挡或暂停时隐藏，保留游戏原生挂车提示标记。
 
@@ -62,7 +62,7 @@ The installer copies `ATSReverseTrajectoryRuntime.dll` to `bin\win_x64` and also
 完整包与工坊版二选一，不要同时启用：
 
 1. **本地完整包：**下载上方 `Full.zip`，完全退出美卡，解压后运行 `Install-Full.bat`。
-2. 在模组管理器中启用“美卡倒车轨迹预测 / ATS Reverse Trajectory Predictor”，重新启动游戏。
+2. 在模组管理器中启用“Reverse Posture Assistant For ATS 1.61.x”，重新启动游戏。
 3. **创意工坊：**订阅[美卡工坊条目](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919)，等待 Steam 下载资源；另行下载 `Workshop.zip` 并运行 `Install-Workshop.bat`。
 4. 在模组管理器中启用工坊版、停用本地副本，再重新启动游戏。
 

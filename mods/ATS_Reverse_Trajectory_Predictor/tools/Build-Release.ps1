@@ -10,7 +10,7 @@ $release = Join-Path $build 'release'
 $staging = Join-Path $build 'package_staging'
 if ([IO.Path]::GetFullPath($staging) -ne "$root\build\package_staging") { throw 'Unsafe staging path.' }
 $version = '0.11.1'
-$modName = 'ATS_Reverse_Trajectory_Predictor_1.61.scs'
+$modName = 'Reverse_Posture_Assistant_For_ATS_1.61.scs'
 $runtimeName = 'ATSReverseTrajectoryRuntime.dll'
 
 if (-not (Test-Path -LiteralPath $MsBuild)) { throw "MSBuild was not found: $MsBuild" }
@@ -68,8 +68,8 @@ function New-Package {
     Compress-Archive -Path (Join-Path $packageRoot '*') -DestinationPath $zip -CompressionLevel Optimal
 }
 
-New-Package "ATS_Reverse_Trajectory_Predictor_v${version}_Full" 'Full'
-New-Package "ATS_Reverse_Trajectory_Predictor_v${version}_Workshop" 'Workshop'
+New-Package "Reverse_Posture_Assistant_For_ATS_v${version}_Full" 'Full'
+New-Package "Reverse_Posture_Assistant_For_ATS_v${version}_Workshop" 'Workshop'
 
 Remove-Item -LiteralPath $staging -Recurse -Force
 Get-ChildItem -LiteralPath $release -File | Select-Object Name, Length, LastWriteTime

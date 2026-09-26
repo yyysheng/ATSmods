@@ -8,6 +8,6 @@
 - BuildProfileTests passed for the exact ATS 1.60.1.8, 1.61.1.1 and 1.61.2.0 profiles, the ATS 1.60 signature fallback, and hook/helper mismatch rejection.
 - The installed ATS 1.61.2.0 executable passed exact SHA-256 and signature validation: 4/4 enabled hooks and 4/4 required runtime helpers.
 - KinematicsTests passed (26 prediction boxes; wheelbase cases 3.8 m and 5.46667 m).
-- Release build generated the v0.11.1 Full and Workshop ZIPs and the bilingual-name `.scs` mod package. The Full ZIP carries the `.scs` and runtime; the Workshop ZIP carries the runtime installer.
+- Release build generated the v0.11.1 Full and Workshop ZIPs and the English-title `.scs` mod package. The Full ZIP carries the `.scs` and runtime; the Workshop ZIP carries the runtime installer.
 - The Workshop uploader tree contains separate v0.11.1 ATS 1.60 and 1.61 resource packages.
 - In-game visual acceptance has not been performed and is not claimed.
