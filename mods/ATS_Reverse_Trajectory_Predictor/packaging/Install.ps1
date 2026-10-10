@@ -51,7 +51,7 @@ function Find-AtsGameRoot {
 }
 
 try {
-    if (Get-Process -Name amtrucks -ErrorAction SilentlyContinue) {
+    if (-not $VerifyOnly -and (Get-Process -Name amtrucks -ErrorAction SilentlyContinue)) {
         throw 'American Truck Simulator is running. Exit the game before installing.'
     }
 
@@ -84,7 +84,7 @@ try {
 
     if ($VerifyOnly) {
         Write-Host ''
-        Write-Host 'VERIFICATION SUCCESSFUL / 安装包验证成功' -ForegroundColor Green
+        Write-Host 'VERIFICATION SUCCESSFUL' -ForegroundColor Green
         Write-Host "Package type: $PackageType"
         Write-Host "Game directory: $GameRoot"
         foreach ($target in $runtimeTargets) { Write-Host "DLL target: $target" }
@@ -102,14 +102,14 @@ try {
     }
 
     Write-Host ''
-    Write-Host 'INSTALLATION SUCCESSFUL / 安装成功' -ForegroundColor Green
-    Write-Host 'Reverse Posture Assistant For ATS 1.61.x v0.11.1' -ForegroundColor Green
+    Write-Host 'INSTALLATION SUCCESSFUL' -ForegroundColor Green
+    Write-Host 'Reverse Posture Assistant For ATS 1.61.x v0.11.2' -ForegroundColor Green
     Write-Host "Package type: $PackageType"
     Write-Host "Game directory: $GameRoot"
     foreach ($target in $runtimeTargets) { Write-Host "Installed DLL: $target" }
     if (-not $isWorkshop) {
         Write-Host "Installed mod: $(Join-Path $ModDirectory $modName)"
-        Write-Host 'Enable the 美卡倒车轨迹预测 mod in the ATS Mod Manager before driving.'
+        Write-Host 'Enable Reverse Posture Assistant in the ATS Mod Manager before driving.'
     }
     else {
         Write-Host 'Subscribe to and enable the Workshop mod before driving.'
@@ -119,8 +119,8 @@ try {
 }
 catch {
     Write-Host ''
-    Write-Host 'INSTALLATION FAILED / 安装失败' -ForegroundColor Red
+    Write-Host 'INSTALLATION FAILED' -ForegroundColor Red
     Write-Host $_.Exception.Message -ForegroundColor Red
-    Write-Host 'No further installation steps were performed.' -ForegroundColor Red
+    Write-Host 'Installation stopped. Files copied before the error may already have been updated.' -ForegroundColor Red
     exit 1
 }

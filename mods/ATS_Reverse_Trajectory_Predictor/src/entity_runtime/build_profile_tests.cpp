@@ -87,13 +87,13 @@ int main(int argc, char **argv)
     const auto *compatible_build = select_build_profile(
         "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         reader, &exact, &failed);
-    CHECK(compatible_build == &build_profiles[3]);
+    CHECK(compatible_build == &build_profiles[4]);
     CHECK(!exact);
 
     // Bytes at an old, inactive lifecycle helper are intentionally irrelevant.
     image[0x015288d0] ^= 0xff;
     compatible_build = select_build_profile("SECOND-BUILD", reader, &exact, &failed);
-    CHECK(compatible_build == &build_profiles[3]);
+    CHECK(compatible_build == &build_profiles[4]);
 
     // Any mismatch in an actually enabled hook causes safe rejection.
     const auto &required = verified_ats_160_1_8_hooks[2];
@@ -151,7 +151,30 @@ int main(int argc, char **argv)
                                 reader1612, &exact, &failed) == nullptr);
     CHECK(failed == verified_ats_161_2_0_hooks.size() + 3);
 
-    std::cout << "ATS build profile tests passed: exact 1.60/1.61.1/1.61.2 profiles; "
+    std::vector<std::uint8_t> image1613(image_size, 0xcc);
+    const auto &current = build_profiles[3];
+    for (const auto &hook : current.enabled_hooks)
+        std::copy(hook.signature.begin(), hook.signature.end(), image1613.begin() + hook.rva);
+    for (const auto &helper : current.runtime_signatures)
+        std::copy(helper.signature.begin(), helper.signature.end(), image1613.begin() + helper.rva);
+    const auto reader1613 = [&](std::uintptr_t rva, const std::uint8_t *bytes, std::size_t size) {
+        return rva <= image1613.size() && size <= image1613.size() - rva &&
+            std::memcmp(image1613.data() + rva, bytes, size) == 0;
+    };
+    CHECK(select_build_profile(current.executable_sha256, reader1613, &exact, &failed) == &current && exact);
+    CHECK(select_build_profile("UNKNOWN-1.61.3", reader1613, &exact, &failed) == nullptr);
+    for (const auto &hook : current.enabled_hooks) {
+        image1613[hook.rva] ^= 0xff;
+        CHECK(select_build_profile(current.executable_sha256, reader1613, &exact, &failed) == nullptr);
+        image1613[hook.rva] ^= 0xff;
+    }
+    for (const auto &helper : current.runtime_signatures) {
+        image1613[helper.rva] ^= 0xff;
+        CHECK(select_build_profile(current.executable_sha256, reader1613, &exact, &failed) == nullptr);
+        image1613[helper.rva] ^= 0xff;
+    }
+
+    std::cout << "ATS build profile tests passed: exact 1.60/1.61.1/1.61.2/1.61.3 profiles; "
                  "1.60 compatible fallback; required hook/helper mismatch rejected\n";
 
     if (argc == 3)
@@ -168,7 +191,7 @@ int main(int argc, char **argv)
             };
         const auto *exact_file = select_build_profile(
             argv[2], file_reader, &exact, &failed);
-        CHECK(exact_file == &build_profiles[2] && exact);
+        CHECK(exact_file != nullptr && exact);
         const auto *alternate_digest = select_build_profile(
             "OFFLINE-SECOND-DIGEST", file_reader, &exact, &failed);
         CHECK(alternate_digest == nullptr && !exact);

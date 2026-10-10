@@ -1,10 +1,10 @@
 # Reverse Posture Assistant For ATS 1.61.x
 
-An **American Truck Simulator only** reverse guidance mod for Windows x64. The current release is **v0.11.1**.
+An **American Truck Simulator only** reverse guidance mod for Windows x64. The current release is **v0.11.2**.
 
 ![Reverse Posture Assistant For ATS 1.61.x Workshop cover](assets/workshop_cover.jpg)
 
-[Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919) · [Latest release](https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.1) · [Source folder](https://github.com/yyysheng/ATSmods/tree/main/mods/ATS_Reverse_Trajectory_Predictor)
+[Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919) · [Latest release](https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.2) · [Source folder](https://github.com/yyysheng/ATSmods/tree/main/mods/ATS_Reverse_Trajectory_Predictor)
 
 **Game scope:** This is the ATS mod **Reverse Posture Assistant For ATS 1.61.x**. “Reverse Posture Assistant For ETS2 1.61.x” is the separate ETS2 mod and Workshop item.
 
@@ -27,7 +27,7 @@ Choose **one** mod source: Full standalone or Steam Workshop. Do not enable both
 
 ### Full standalone package
 
-1. Download [Reverse_Posture_Assistant_For_ATS_v0.11.1_Full.zip](https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.1/Reverse_Posture_Assistant_For_ATS_v0.11.1_Full.zip).
+1. Download [Reverse_Posture_Assistant_For_ATS_v0.11.2_Full.zip](https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.2/Reverse_Posture_Assistant_For_ATS_v0.11.2_Full.zip).
 2. Fully exit ATS, extract the ZIP, and run `Install-Full.bat`.
 3. Enable **Reverse Posture Assistant For ATS 1.61.x** in the ATS Mod Manager, then restart the game.
 4. Enter a driving session and select reverse gear. No cabin accessory is needed.
@@ -35,7 +35,7 @@ Choose **one** mod source: Full standalone or Steam Workshop. Do not enable both
 ### Steam Workshop package
 
 1. Subscribe to the [ATS Workshop item](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919) and let Steam download its content.
-2. Download [Reverse_Posture_Assistant_For_ATS_v0.11.1_Workshop.zip](https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.1/Reverse_Posture_Assistant_For_ATS_v0.11.1_Workshop.zip).
+2. Download [Reverse_Posture_Assistant_For_ATS_v0.11.2_Workshop.zip](https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.2/Reverse_Posture_Assistant_For_ATS_v0.11.2_Workshop.zip).
 3. Fully exit ATS, extract the ZIP, and run `Install-Workshop.bat`.
 4. Enable the Workshop item in the Mod Manager, disable any standalone copy, then restart ATS.
 
@@ -45,11 +45,12 @@ The installer copies `ATSReverseTrajectoryRuntime.dll` to `bin\win_x64` and also
 
 ## ATS compatibility
 
+- **ATS 1.61.3.1** (Windows x64): exact executable profile; user in-game validation completed without reported issues.
 - **ATS 1.61.2.0**, Windows x64: exact executable profile, checked against the installed Steam executable. Its four entry hooks and four required entity helpers are checked before native hooks are enabled.
 - **ATS 1.61.1.1**, Windows x64: retained exact executable profile with the same hook/helper checks.
 - **ATS 1.60.1.8**, Windows x64: exact executable profile. Other ATS 1.60 builds require all enabled hook signatures to match.
 - Other or modified executables skip native hooks and retain telemetry-only mode.
-- Automated build/profile and kinematics checks are recorded in [v0.11.1 verification](VERIFICATION_v0.11.1.md). In-game visual acceptance of v0.11.1 has not been performed.
+- Automated build/profile and kinematics checks are recorded in [v0.11.2 verification](VERIFICATION_v0.11.2.md). The user verified v0.11.2 in game and reported no abnormalities.
 
 ## 中文说明
 
@@ -72,11 +73,28 @@ The installer copies `ATSReverseTrajectoryRuntime.dll` to `bin\win_x64` and also
 
 ### 美卡兼容版本
 
+- **ATS 1.61.3.1**（Windows x64）：新增精确配置；用户已完成游戏内验证并反馈无异常。
 - **ATS 1.61.2.0**（Windows x64）：本机 Steam 可执行文件精确配置；启用原生 Hook 前检查 4 个入口 Hook 和 4 个必需实体辅助函数。
 - **ATS 1.61.1.1**（Windows x64）：保留精确配置和相同的 Hook/辅助函数校验。
 - **ATS 1.60.1.8**（Windows x64）：精确配置；其他 ATS 1.60 构建必须匹配全部已启用 Hook 签名。
 - 其他或修改过的可执行文件会跳过原生 Hook，仅保留遥测模式。
-- 自动构建、配置校验与运动学检查记录见 [v0.11.1 验证记录](VERIFICATION_v0.11.1.md)。尚未完成 v0.11.1 游戏内画面验收。
+- 自动构建、配置校验与运动学检查记录见 [v0.11.2 验证记录](VERIFICATION_v0.11.2.md)。用户已完成 v0.11.2 游戏内验证，反馈无异常。
+
+## v0.11.2 / Truck-only scope
+
+This mod displays reverse trajectories for trucks and trailers only. Personal vehicle mode
+is intentionally excluded. Road Trip Ford/Dodge/Ram identifiers are suppressed even though
+the game exposes them through SDK truck telemetry channels. Truck dimensions and prediction
+calculations retain their previous behavior. ATS 1.61.3.1 uses an exact executable profile;
+unknown builds remain telemetry-only.
+
+Windows installers contain ASCII only to prevent Windows PowerShell 5.1 locale decoding
+errors. Unavailable gear and placement samples are cleared during mode transitions.
+
+本模组仅支持卡车车头与挂车。乘用车模式不显示倒车线；新增 DLC 的适配目标是
+避免乘用车模式及模式切换影响卡车功能，不提供乘用车轨迹预测。
+
+User in-game validation completed without reported issues. See VERIFICATION_v0.11.2.md.
 
 ## Project information
 
@@ -84,3 +102,4 @@ The installer copies `ATSReverseTrajectoryRuntime.dll` to `bin\win_x64` and also
 - Telemetry API: SCS SDK
 - Hook library: MinHook
 - [Third-party notices](THIRD_PARTY_NOTICES.md) · [Build instructions](BUILDING.md) · [Workshop upload instructions](WORKSHOP_BUILDING.md)
+

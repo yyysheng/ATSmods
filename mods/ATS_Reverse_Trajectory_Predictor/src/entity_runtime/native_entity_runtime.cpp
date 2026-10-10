@@ -93,6 +93,9 @@ struct WheelTelemetry
 
 struct VehicleConfiguration
 {
+    std::string id;
+    std::string brand_id;
+    bool personal_vehicle = false;
     scs_value_fvector_t hook{};
     bool hook_valid = false;
     scs_u32_t wheel_count = 0;
@@ -2099,7 +2102,11 @@ void unsafe_hide_unused_prediction_models(
 bool unsafe_render_independent_prediction_frames(
     std::uint64_t render_context)
 {
-    if (!render_context) return true;
+    if (!render_context || !telemetry.driving) return true;
+    {
+        std::lock_guard lock(telemetry_configuration_mutex);
+        if (telemetry.truck_configuration.personal_vehicle) return true;
+    }
     std::lock_guard model_lock(prediction_models_mutex);
 
     PredictionFrameSet frames{};
@@ -2445,7 +2452,19 @@ void update_vehicle_configuration(
              configuration->attributes;
          attribute->name; ++attribute)
     {
-        if (std::strcmp(
+        if (attribute->value.type == SCS_VALUE_TYPE_string &&
+            attribute->value.value_string.value &&
+            std::strcmp(attribute->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_id) == 0)
+        {
+            next.id = attribute->value.value_string.value;
+        }
+        else if (attribute->value.type == SCS_VALUE_TYPE_string &&
+                 attribute->value.value_string.value &&
+                 std::strcmp(attribute->name, SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand_id) == 0)
+        {
+            next.brand_id = attribute->value.value_string.value;
+        }
+        else if (std::strcmp(
                 attribute->name,
                 SCS_TELEMETRY_CONFIG_ATTRIBUTE_hook_position) == 0 &&
             attribute->value.type == SCS_VALUE_TYPE_fvector)
@@ -2502,10 +2521,19 @@ void update_vehicle_configuration(
         }
     }
 
+    // Road Trip brands share the SDK's "truck" configuration/channels;
+    // identify them so this truck-only mod can suppress their drawing.
+    // Four wheels alone cannot distinguish a personal vehicle from a tractor.
+    next.personal_vehicle = is_truck &&
+        (next.brand_id == "ford" || next.brand_id == "dodge" || next.brand_id == "ram" ||
+         next.id.starts_with("ford.") || next.id.starts_with("dodge.") || next.id.starts_with("ram."));
     {
         std::lock_guard lock(telemetry_configuration_mutex);
         if (is_truck)
+        {
             telemetry.truck_configuration = next;
+            telemetry.truck_wheels = {};
+        }
         else
             telemetry.trailer_configuration = next;
     }
@@ -2520,7 +2548,9 @@ void update_vehicle_configuration(
             : std::numeric_limits<double>::quiet_NaN();
         const auto geometry =
             reverse_assist::estimate_tractor_spec(wheels, hook_z);
-        message << "[reverse-entity] Truck geometry: wheels="
+        message << "[reverse-entity] Vehicle geometry: id=" << next.id
+                << " brand=" << next.brand_id
+                << " personal=" << next.personal_vehicle << " wheels="
                 << wheels.size()
                 << " wheelbase=" << geometry.wheelbase
                 << " length=" << geometry.length
@@ -2566,6 +2596,9 @@ void update_prediction_frame_targets()
         trailer_wheel_telemetry{};
     {
         std::lock_guard lock(telemetry_configuration_mutex);
+        // This mod draws truck and trailer paths only. Road Trip shares the
+        // truck telemetry channels, so exclude its vehicles explicitly.
+        if (telemetry.truck_configuration.personal_vehicle) return;
         truck_configuration = telemetry.truck_configuration;
         trailer_configuration = telemetry.trailer_configuration;
         truck_wheel_telemetry = telemetry.truck_wheels;
@@ -2791,6 +2824,10 @@ void update_entities()
     update_prediction_frame_targets();
     if (!engine.enabled || faulted) return;
     if (!telemetry.driving || !telemetry.truck_valid) return;
+    {
+        std::lock_guard lock(telemetry_configuration_mutex);
+        if (telemetry.truck_configuration.personal_vehicle) return;
+    }
 
     // Both the telemetry "started" event and the first placement sample can
     // arrive while the profile/vehicle unit graph is still being assembled.
@@ -2897,9 +2934,24 @@ void update_entities()
 SCSAPI_VOID channel_callback(const scs_string_t, const scs_u32_t,
                              const scs_value_t *const value, const scs_context_t context)
 {
-    if (!value) return;
     const auto channel_context =
         reinterpret_cast<std::uintptr_t>(context);
+    if (!value)
+    {
+        // The SDK explicitly sends no_value when a vehicle/channel disappears.
+        // Clear cached values so switching modes cannot retain a trailer pose
+        // or a reverse gear from the previous vehicle.
+        switch (channel_context)
+        {
+        case 1: telemetry.gear = 0; break;
+        case 2: telemetry.steering = 0.0f; break;
+        case 3: telemetry.truck_valid = false; break;
+        case 4: telemetry.trailer_connected = false; break;
+        case 5: telemetry.trailer_valid = false; break;
+        default: break;
+        }
+        return;
+    }
     switch (channel_context)
     {
     case 1:
