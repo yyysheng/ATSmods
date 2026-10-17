@@ -103,7 +103,7 @@ try {
 
     Write-Host ''
     Write-Host 'INSTALLATION SUCCESSFUL' -ForegroundColor Green
-    Write-Host 'Reverse Posture Assistant For ATS 1.61.x v0.11.2' -ForegroundColor Green
+    Write-Host 'Reverse Posture Assistant For ATS 1.61.x v0.11.3' -ForegroundColor Green
     Write-Host "Package type: $PackageType"
     Write-Host "Game directory: $GameRoot"
     foreach ($target in $runtimeTargets) { Write-Host "Installed DLL: $target" }

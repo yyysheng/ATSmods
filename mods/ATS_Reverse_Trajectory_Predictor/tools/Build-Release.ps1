@@ -1,4 +1,4 @@
-﻿param(
+param(
     [string]$MsBuild = 'E:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Current\Bin\amd64\MSBuild.exe',
     [string]$AtsExecutable = 'E:\Program Files (x86)\Steam\steamapps\common\American Truck Simulator\bin\win_x64\amtrucks.exe'
 )
@@ -9,7 +9,7 @@ $build = Join-Path $root 'build'
 $release = Join-Path $build 'release'
 $staging = Join-Path $build 'package_staging'
 if ([IO.Path]::GetFullPath($staging) -ne "$root\build\package_staging") { throw 'Unsafe staging path.' }
-$version = '0.11.2'
+$version = '0.11.3'
 $modName = 'Reverse_Posture_Assistant_For_ATS_1.61.scs'
 $runtimeName = 'ATSReverseTrajectoryRuntime.dll'
 

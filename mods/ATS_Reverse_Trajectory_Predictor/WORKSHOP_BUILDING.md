@@ -8,6 +8,6 @@ Before uploading:
 2. Select the `workshop` directory in SCS Workshop Uploader.
 3. Set the Workshop title to **Reverse Posture Assistant For ATS 1.61.x**. This is the ATS item, separate from the ETS2 item “Reverse Posture Assistant For ETS2 1.61.x.”
 4. Use `assets/workshop_cover_640x360.jpg` as the preview image.
-5. Copy `WORKSHOP_DESCRIPTION.txt` into the uploader's description field. It uses Steam Workshop BBCode, not Markdown.
+5. Copy the current bilingual `WORKSHOP_DESCRIPTION.txt` into the uploader's description field. It uses Steam Workshop BBCode, not Markdown, and includes the v0.11.3 ground-slope change and separate Full/Workshop runtime instructions.
 
 The published item is available at [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919).

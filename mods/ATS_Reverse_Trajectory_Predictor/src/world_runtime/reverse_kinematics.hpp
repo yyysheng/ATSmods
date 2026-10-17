@@ -36,6 +36,11 @@ struct WheelSpec
     bool on_ground_known = false;
     double steering_angle = 0.0;
     bool steering_angle_known = false;
+    double y = 0.0;
+    double radius = 0.0;
+    bool radius_known = false;
+    double suspension_deflection = 0.0;
+    bool suspension_deflection_known = false;
 };
 
 struct TractorSpec
@@ -300,6 +305,104 @@ inline double body_plane_height(double local_x,
     // the forward end, while positive roll raises the right side.
     return local_x * std::tan(roll) -
            local_z * std::tan(pitch);
+}
+
+struct GroundPlane
+{
+    double slope_right = 0.0;
+    double slope_rearward = 0.0;
+    bool wheel_fitted = false;
+    bool right_fitted = false;
+    bool rearward_fitted = false;
+};
+
+// Recover road grade from grounded tyre centres. Vehicle pitch/roll also
+// includes suspension geometry, so use suspension travel to reconstruct the
+// wheel-centre positions before fitting the road plane. Keeping the legacy
+// body attitude as a fallback preserves behavior when a game build does not
+// publish enough per-wheel samples.
+inline GroundPlane estimate_ground_plane(
+    const std::vector<WheelSpec> &wheels,
+    double body_pitch,
+    double body_roll)
+{
+    constexpr double maximum_slope = 35.0 * pi / 180.0;
+    GroundPlane result{
+        std::tan(std::clamp(body_roll, -maximum_slope, maximum_slope)),
+        -std::tan(std::clamp(body_pitch, -maximum_slope, maximum_slope)),
+        false, false, false};
+
+    struct Sample { double x; double z; double height; };
+    std::vector<Sample> samples;
+    samples.reserve(wheels.size());
+    for (const auto &wheel : wheels)
+    {
+        if (wheel.on_ground_known && !wheel.on_ground) continue;
+        if (!wheel.suspension_deflection_known) continue;
+        double contact_height =
+            body_plane_height(wheel.x, wheel.z, body_pitch, body_roll) +
+            wheel.y + wheel.suspension_deflection;
+        if (wheel.radius_known) contact_height -= wheel.radius;
+        if (std::isfinite(contact_height))
+            samples.push_back({wheel.x, wheel.z, contact_height});
+    }
+    if (samples.size() < 2) return result;
+
+    double mean_x = 0.0, mean_z = 0.0, mean_height = 0.0;
+    for (const auto &sample : samples)
+    {
+        mean_x += sample.x;
+        mean_z += sample.z;
+        mean_height += sample.height;
+    }
+    const double count = static_cast<double>(samples.size());
+    mean_x /= count;
+    mean_z /= count;
+    mean_height /= count;
+
+    double xx = 0.0, xz = 0.0, zz = 0.0;
+    double xh = 0.0, zh = 0.0;
+    for (const auto &sample : samples)
+    {
+        const double x = sample.x - mean_x;
+        const double z = sample.z - mean_z;
+        const double height = sample.height - mean_height;
+        xx += x * x;
+        xz += x * z;
+        zz += z * z;
+        xh += x * height;
+        zh += z * height;
+    }
+
+    constexpr double rank_epsilon = 1e-8;
+    const double determinant = xx * zz - xz * xz;
+    if (determinant > rank_epsilon)
+    {
+        result.slope_right = (xh * zz - zh * xz) / determinant;
+        result.slope_rearward = (zh * xx - xh * xz) / determinant;
+        result.wheel_fitted = true;
+        result.right_fitted = true;
+        result.rearward_fitted = true;
+    }
+    else if (xx > zz && xx > rank_epsilon)
+    {
+        result.slope_right = xh / xx;
+        result.wheel_fitted = true;
+        result.right_fitted = true;
+    }
+    else if (zz > rank_epsilon)
+    {
+        result.slope_rearward = zh / zz;
+        result.wheel_fitted = true;
+        result.rearward_fitted = true;
+    }
+
+    const double maximum_gradient = std::tan(maximum_slope);
+    result.slope_right = std::clamp(
+        result.slope_right, -maximum_gradient, maximum_gradient);
+    result.slope_rearward = std::clamp(
+        result.slope_rearward, -maximum_gradient, maximum_gradient);
+    return result;
 }
 
 struct Prediction

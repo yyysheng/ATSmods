@@ -1,14 +1,13 @@
-Reverse Posture Assistant For ATS 1.61.x v0.11.2
+Reverse Posture Assistant For ATS 1.61.x v0.11.3
 
-仅适用于 American Truck Simulator。欧卡 2 的 Reverse Posture Assistant 是另一款独立模组。
-ATS 1.60 / 1.61，Windows x64。已校验 ATS 1.60.1.8、1.61.1.1、1.61.2.0 与 1.61.3.1。
-需要另行安装 GitHub Workshop 运行组件包。无需驾驶室挂件。不要同时启用本地版与工坊版。
+仅适用于 American Truck Simulator。倒挡时显示蓝色车头与橙色挂车预测边界，固定预测距离 5 米。坡度按接地轮胎中心与悬挂行程拟合，避免悬挂高低造成平地轨迹倾斜。
+欧卡 2 的 Reverse Posture Assistant 是不同游戏的独立模组。仅支持卡车车头与挂车；乘用车模式不显示倒车线。
+ATS 1.60 / 1.61，Windows x64。精确配置覆盖 ATS 1.60.1.8、1.61.1.1、1.61.2.0、1.61.3.1，以及当前本机 Steam 可执行文件内部版本 1.61.3.18。
+工坊订阅不包含 DLL，需另行安装 GitHub Workshop 运行组件包。不要同时启用本地版与工坊版。
 
-American Truck Simulator only; separate from the ETS2 Reverse Posture Assistant.
-Windows x64. Exact executable profiles checked on ATS 1.60.1.8, 1.61.1.1, 1.61.2.0 and 1.61.3.1.
-Install the GitHub Workshop runtime package. No cabin accessory is needed. Do not enable standalone and Workshop copies together.
+American Truck Simulator only. The 5 m reverse guide follows grounded tyre centres and suspension travel, so uneven suspension height alone does not tilt the path on level ground.
+Separate from the ETS2 mod. Truck and trailer support only; no reverse lines in personal vehicle mode.
+Windows x64. Exact executable profiles cover ATS 1.60.1.8, 1.61.1.1, 1.61.2.0, 1.61.3.1 and local executable file version 1.61.3.18.
+Workshop subscription does not include the runtime DLL. Install the GitHub Workshop runtime package and do not enable standalone and Workshop copies together.
 
-https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.2
-
-仅支持卡车车头与挂车，乘用车模式不显示倒车线。v0.11.2 修复安装脚本编码问题；用户已完成游戏内验证并反馈无异常。
-Truck and trailer support only; no reverse lines in personal vehicle mode. v0.11.2 fixes installer encoding. User in-game validation completed without reported issues.
+https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.3

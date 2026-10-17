@@ -373,6 +373,82 @@ int main()
     assert(body_plane_height(2.0, 0.0, 0.0, 5.0 * pi / 180.0) >
            0.0);
 
+    // Flat road with suspension-induced body pitch and roll must fit a level
+    // tyre plane instead of copying those chassis angles into the guide.
+    const double body_pitch = 8.0 * pi / 180.0;
+    const double body_roll = -4.0 * pi / 180.0;
+    std::vector<WheelSpec> flat_wheels;
+    for (const double x : {-1.0, 1.0})
+    {
+        for (const double z : {-2.0, 2.0})
+        {
+            WheelSpec wheel{x, z};
+            wheel.on_ground = true;
+            wheel.on_ground_known = true;
+            wheel.y = 0.0;
+            wheel.radius = 0.5;
+            wheel.radius_known = true;
+            wheel.suspension_deflection =
+                -body_plane_height(x, z, body_pitch, body_roll) +
+                wheel.radius;
+            wheel.suspension_deflection_known = true;
+            if (x > 0.0 && z > 0.0)
+            {
+                wheel.on_ground = false;
+                wheel.suspension_deflection += 12.0;
+            }
+            flat_wheels.push_back(wheel);
+        }
+    }
+    const GroundPlane flat_plane = estimate_ground_plane(
+        flat_wheels, body_pitch, body_roll);
+    assert(flat_plane.wheel_fitted);
+    assert(flat_plane.right_fitted && flat_plane.rearward_fitted);
+    assert(std::abs(flat_plane.slope_right) < 1e-7);
+    assert(std::abs(flat_plane.slope_rearward) < 1e-7);
+
+    // A real road grade is recovered even when body attitude differs from
+    // that grade because the suspension is unevenly loaded.
+    constexpr double road_slope_right = 0.06;
+    constexpr double road_slope_rearward = -0.09;
+    std::vector<WheelSpec> graded_wheels;
+    for (const double x : {-1.0, 1.0})
+    {
+        for (const double z : {-2.0, 2.0})
+        {
+            WheelSpec wheel{x, z};
+            wheel.on_ground = true;
+            wheel.on_ground_known = true;
+            wheel.y = 0.0;
+            wheel.radius = 0.5;
+            wheel.radius_known = true;
+            const double road_height =
+                2.0 + road_slope_right * x +
+                road_slope_rearward * z;
+            wheel.suspension_deflection =
+                road_height - body_plane_height(
+                    x, z, body_pitch, body_roll) + wheel.radius;
+            wheel.suspension_deflection_known = true;
+            graded_wheels.push_back(wheel);
+        }
+    }
+    const GroundPlane graded_plane = estimate_ground_plane(
+        graded_wheels, body_pitch, body_roll);
+    assert(graded_plane.wheel_fitted);
+    assert(std::abs(graded_plane.slope_right - road_slope_right) < 1e-7);
+    assert(std::abs(graded_plane.slope_rearward - road_slope_rearward) <
+           1e-7);
+
+    // Missing suspension samples retain the safe chassis-angle fallback.
+    const GroundPlane fallback_plane = estimate_ground_plane(
+        {WheelSpec{-1.0, -2.0}, WheelSpec{1.0, 2.0}},
+        body_pitch, body_roll);
+    assert(!fallback_plane.wheel_fitted);
+    assert(std::abs(fallback_plane.slope_right - std::tan(body_roll)) <
+           1e-7);
+    assert(std::abs(fallback_plane.slope_rearward + std::tan(body_pitch)) <
+           1e-7);
+
     std::cout << "reverse kinematics tests passed: "
               << articulated.boxes.size()
               << " boxes, limited max steps "

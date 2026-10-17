@@ -174,7 +174,40 @@ int main(int argc, char **argv)
         image1613[helper.rva] ^= 0xff;
     }
 
-    std::cout << "ATS build profile tests passed: exact 1.60/1.61.1/1.61.2/1.61.3 profiles; "
+    std::vector<std::uint8_t> image161318(image_size, 0xcc);
+    const auto &current161318 = build_profiles[5];
+    for (const auto &hook : current161318.enabled_hooks)
+        std::copy(hook.signature.begin(), hook.signature.end(),
+                  image161318.begin() + hook.rva);
+    for (const auto &helper : current161318.runtime_signatures)
+        std::copy(helper.signature.begin(), helper.signature.end(),
+                  image161318.begin() + helper.rva);
+    const auto reader161318 = [&](std::uintptr_t rva,
+                                  const std::uint8_t *bytes,
+                                  std::size_t size) {
+        return rva <= image161318.size() &&
+            size <= image161318.size() - rva &&
+            std::memcmp(image161318.data() + rva, bytes, size) == 0;
+    };
+    CHECK(select_build_profile(current161318.executable_sha256,
+                               reader161318, &exact, &failed) ==
+          &current161318 && exact);
+    CHECK(select_build_profile("UNKNOWN-1.61.3.18", reader161318,
+                               &exact, &failed) == nullptr);
+    for (const auto &hook : current161318.enabled_hooks) {
+        image161318[hook.rva] ^= 0xff;
+        CHECK(select_build_profile(current161318.executable_sha256,
+                                   reader161318, &exact, &failed) == nullptr);
+        image161318[hook.rva] ^= 0xff;
+    }
+    for (const auto &helper : current161318.runtime_signatures) {
+        image161318[helper.rva] ^= 0xff;
+        CHECK(select_build_profile(current161318.executable_sha256,
+                                   reader161318, &exact, &failed) == nullptr);
+        image161318[helper.rva] ^= 0xff;
+    }
+
+    std::cout << "ATS build profile tests passed: exact 1.60/1.61.1/1.61.2/1.61.3 profiles, including executable file version 1.61.3.18; "
                  "1.60 compatible fallback; required hook/helper mismatch rejected\n";
 
     if (argc == 3)
