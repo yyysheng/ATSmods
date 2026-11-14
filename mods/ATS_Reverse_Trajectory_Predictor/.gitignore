@@ -5,3 +5,12 @@
 /src/entity_runtime/obj_profile_tests/
 /src/world_runtime/obj/
 /src/world_runtime/obj_tests/
+
+# Private licensing evidence/drafts live outside this repository.
+/FILE_LICENSES.csv
+/ASSET_OWNERSHIP.csv
+/LICENSE_ACTIVATION.json
+/DEPENDENCY_PROVENANCE.md
+/FUTURE_LICENSING_PLAN.md
+/licenses/LICENSE.proprietary-code.txt
+/licenses/LICENSE.original-assets.txt

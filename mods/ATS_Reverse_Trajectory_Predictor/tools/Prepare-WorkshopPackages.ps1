@@ -1,4 +1,7 @@
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'LicensePackaging.ps1')
+$licenseProjectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..')).TrimEnd('\','/')
+$null = Get-LicensePackageFiles $licenseProjectRoot
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $source = (Resolve-Path (Join-Path $root 'src\mod')).Path
 $workshopRoot = (Resolve-Path (Join-Path $root 'workshop')).Path
@@ -47,3 +50,7 @@ foreach ($folderName in $versionFolders) {
 }
 
 Write-Output "Prepared ATS 1.60 and 1.61 Workshop content packages at $workshopRoot"
+
+foreach ($package in @('160_content', '161_content', 'universal_info')) {
+    Copy-LicenseFilesToDirectory $licenseProjectRoot (Join-Path $licenseProjectRoot ('workshop/' + $package))
+}

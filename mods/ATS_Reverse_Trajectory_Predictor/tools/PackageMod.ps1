@@ -1,5 +1,9 @@
 param([Parameter(Mandatory=$true)][string]$Destination)
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'LicensePackaging.ps1')
+$licenseProjectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..')).TrimEnd('\','/')
+$null = Get-LicensePackageFiles -ProjectRoot $licenseProjectRoot
+
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $source = (Resolve-Path (Join-Path $PSScriptRoot '../src/mod')).Path
 $files = Get-ChildItem -LiteralPath $source -Recurse -File
@@ -16,6 +20,7 @@ try {
         [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip,$file.FullName,$relative,[IO.Compression.CompressionLevel]::Optimal) | Out-Null
     }
 } finally { $zip.Dispose() }
+Add-LicenseFilesToArchive -ProjectRoot $licenseProjectRoot -Archive $Destination
 $zip = [IO.Compression.ZipFile]::OpenRead($Destination)
 try {
     foreach ($required in @('manifest.sii','material/reverse_assist/inv.mat','model/reverse_assist/accessory_anchor.pmd','model/reverse_assist/sweep_edge.pmd','model/reverse_assist/sweep_edge_blue.pmd')) {

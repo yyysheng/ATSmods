@@ -4,6 +4,10 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'LicensePackaging.ps1')
+$licenseProjectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..')).TrimEnd('\','/')
+$null = Get-LicensePackageFiles -ProjectRoot $licenseProjectRoot
+
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $build = Join-Path $root 'build'
 $release = Join-Path $build 'release'
@@ -73,6 +77,7 @@ function New-Package {
     $zip = Join-Path $release "$Name.zip"
     Remove-Item -LiteralPath $zip -Force -ErrorAction SilentlyContinue
     Compress-Archive -Path (Join-Path $packageRoot '*') -DestinationPath $zip -CompressionLevel Optimal
+    Add-LicenseFilesToArchive -ProjectRoot $licenseProjectRoot -Archive $zip
 }
 
 New-Package "Reverse_Posture_Assistant_For_ATS_v${version}_Full" 'Full'
