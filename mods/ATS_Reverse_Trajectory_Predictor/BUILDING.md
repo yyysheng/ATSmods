@@ -1,4 +1,4 @@
-# Building Reverse Posture Assistant For ATS 1.61.x
+# Building Reverse Posture Assistant For ATS 1.62.x
 
 ## Requirements
 
@@ -19,7 +19,7 @@
 1. 构建并运行 BuildProfile 测试。
 2. 构建并运行倒车运动学测试。
 3. 构建 `ATSReverseTrajectoryRuntime.dll`。
-4. 用本机 ATS 1.61.3.1 `version.scs` 配套的 Steam `amtrucks.exe`（文件版本 1.61.3.18）验证精确哈希、4 个启用 Hook 和 4 个运行时辅助函数；测试还覆盖 ATS 1.61.1.1、1.61.2.0、1.60.1.8 与 1.60 签名回退。
+4. 用本机 ATS 1.62.2.2 的 Steam `amtrucks.exe`验证精确哈希、4 个启用 Hook 和 4 个运行时辅助函数；测试还覆盖 ATS 1.61.1.1、1.61.2.0、1.60.1.8 与 1.60 签名回退。
 5. 打包 `.scs`、完整安装包和运行时包。
 
 ## 兼容性原则

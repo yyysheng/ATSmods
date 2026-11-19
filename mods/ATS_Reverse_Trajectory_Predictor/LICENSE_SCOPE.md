@@ -1,11 +1,9 @@
-# Public licensing and build scope
+# Effective original-code scope — V1.62.2.2
 
-LICENSE is the effective scope index. The original historical MIT text is retained in licenses/LICENSE.historical-MIT.txt; LICENSE_HISTORY.md maps it to original tags/commits. Historical grants cover original project code within their then-effective scope and are not revoked. Historical asset coverage remains unresolved.
+Licensor and original-code rights holder: yyysheng. Contact: https://github.com/yyysheng/ATSmods/issues
 
-See FUTURE_LICENSING_POLICY.md for prospective relicensing of fully owned original code, including previously MIT-published original code. No prospective proprietary terms are active. Third-party components remain separately licensed.
+The licensor confirmed full relicensing authority and approved the proprietary terms on 2026-11-20. LICENSE_SCOPE.json lists covered original source files and canonical SHA-256 digests. Only original code in that list, its compiled portions and installer copies are covered. Third-party components and all models, textures, wireframes and preview images are excluded.
 
-The public build requires LICENSE_PACKAGE.json, source manifest.sii, public license texts/notices and packaging scripts only. Ownership inventories, personal evidence, local dependency audit paths, activation records and inactive detailed terms are stored outside the repositories; they are not required for a clean checkout.
+Canonical source hashes replace CRLF byte pairs with LF and retain all other bytes. The release tag reverse-trajectory-predictor-v1.62.2.2 and detached RELEASE_APPROVAL.json identify the immutable effective commit. The detached record avoids a self-referential commit hash.
 
-Historical integrity rule: decode strict UTF-8; replace CRLF pairs with LF; encode UTF-8 and compute SHA-256. Do not trim, remove BOM, change lone CR, normalize spaces or remove/add a final newline. The configuration field historical_mit_sha256_lf uses this rule. LICENSE_HISTORY.md hashes describe original Git blob bytes (LF in the mapped commits); these equal the canonical digest for this history. Physical LF and CRLF checkout digests may differ, without changing text. Archive/directory copy integrity still uses raw byte hashes against that checkout. No historical tag or license text is rewritten by this rule.
-
-Only effective licenses and copyright notices enter end-user packages. Public source/build policy documents and configuration are not end-user package payloads. Future version or mode changes fail packaging until a new profile is reviewed.
+Historical MIT grants and full license texts remain effective for historical copies. Private audit inventories and draft activation records remain outside this public source tree.

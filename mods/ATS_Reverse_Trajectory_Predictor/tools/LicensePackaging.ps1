@@ -4,12 +4,12 @@ function Get-LicensePackageFiles {
     param([Parameter(Mandatory=$true)][string]$ProjectRoot)
     $manifest = Join-Path $ProjectRoot 'LICENSE_PACKAGE.json'
     $spec = Get-Content -LiteralPath $manifest -Raw | ConvertFrom-Json
-    $fixed = @('LICENSE','THIRD_PARTY_NOTICES.md','licenses/LICENSE.scs-sdk.txt','licenses/LICENSE.scs-telemetry.txt','licenses/LICENSE.minhook.txt','licenses/LICENSE.historical-MIT.txt')
+    $fixed = @('LICENSE_SCOPE.json','LICENSE_SCOPE.md','licenses/LICENSE_CODE_PROPRIETARY.txt','LICENSE','THIRD_PARTY_NOTICES.md','licenses/LICENSE.scs-sdk.txt','licenses/LICENSE.scs-telemetry.txt','licenses/LICENSE.minhook.txt','licenses/LICENSE.historical-MIT.txt')
     if ((Split-Path $ProjectRoot -Leaf) -eq 'ETS2_Reverse_Planner') { $fixed += 'licenses/LICENSE.ets2la-plugin.txt' }
     if (@($spec.files).Count -ne $fixed.Count) { throw 'Public license manifest differs from reviewed allowlist.' }
     foreach ($required in $fixed) { if ($required -cnotin @($spec.files)) { throw "License manifest omits required file: $required" } }
-    if ($spec.license_mode -ne 'historical-MIT-code') { throw 'Unapproved license mode.' }
-    $expectedVersions = @{ 'ETS2_Reverse_Posture_Assistant' = '1.62.3.3'; 'ATS_Reverse_Trajectory_Predictor' = '0.11.3'; 'ETS2_Reverse_Planner' = '0.1.0-beta' }
+    if ($spec.license_mode -ne 'proprietary-original-code') { throw 'Unapproved license mode.' }
+    $expectedVersions = @{ 'ETS2_Reverse_Posture_Assistant' = '1.62.3.3'; 'ATS_Reverse_Trajectory_Predictor' = '1.62.2.2'; 'ETS2_Reverse_Planner' = '0.1.0-beta' }
     $expectedVersion = $expectedVersions[(Split-Path $ProjectRoot -Leaf)]
     if (-not $expectedVersion -or $spec.release_version -cne $expectedVersion) { throw 'Release licensing profile is not approved for this version.' }
     $modManifest = Get-Content -LiteralPath (Join-Path $ProjectRoot 'src/mod/manifest.sii') -Raw
@@ -23,7 +23,18 @@ function Get-LicensePackageFiles {
     try { $actual = [BitConverter]::ToString($sha.ComputeHash($utf8.GetBytes($text))).Replace('-', '').ToLowerInvariant() }
     finally { $sha.Dispose() }
     if ($actual -cne $spec.historical_mit_sha256_lf) { throw 'Historical MIT text integrity mismatch (LF canonical SHA-256).' }
-    if ($spec.proprietary_active -ne $false) { throw 'Future proprietary activation requires a reviewed release profile.' }
+    if ($spec.proprietary_active -ne $true) { throw 'This release requires the approved original-code proprietary profile.' }
+    $scope = Get-Content -LiteralPath (Join-Path $ProjectRoot 'LICENSE_SCOPE.json') -Raw | ConvertFrom-Json
+    if ($scope.release_version -cne $expectedVersion -or $scope.licensor -cne 'yyysheng' -or $scope.hash_rule -cne 'sha256:crlf-to-lf-byte-pairs-v1') { throw 'Invalid public scope schedule.' }
+    foreach ($entry in $scope.files) {
+        if ($entry.path -notmatch '^(src/(entity_runtime|world_runtime)/|tools/|packaging/)[A-Za-z0-9_./-]+$' -or $entry.path -match '(^|/)\.\.(/|$)') { throw 'Invalid proprietary source path.' }
+        $source = Join-Path $ProjectRoot $entry.path
+        $sourceText = $utf8.GetString([IO.File]::ReadAllBytes($source)).Replace("`r`n", "`n")
+        $sourceSha = [Security.Cryptography.SHA256]::Create()
+        try { $sourceHash = [BitConverter]::ToString($sourceSha.ComputeHash($utf8.GetBytes($sourceText))).Replace('-', '').ToLowerInvariant() }
+        finally { $sourceSha.Dispose() }
+        if ($sourceHash -cne $entry.sha256_lf) { throw "Public code scope hash mismatch: $($entry.path)" }
+    }
     $paths = @($spec.files)
     if (@($paths | Select-Object -Unique).Count -ne $paths.Count) { throw 'Duplicate license manifest path.' }
     foreach ($relative in $paths) {
@@ -71,7 +82,7 @@ function Assert-NoInternalLicenseFiles {
         if ([string]::IsNullOrEmpty($name)) { continue }
         $normalized = $name.Replace('\','/')
         $leaf = ($normalized -split '/')[-1]
-        if ($leaf -in @('FILE_LICENSES.csv','ASSET_OWNERSHIP.csv','LICENSE_ACTIVATION.json','LICENSE_PACKAGE.json','LICENSE_SCOPE.md','LICENSE_HISTORY.md','LICENSE.proprietary-code.txt','LICENSE.original-assets.txt','FUTURE_LICENSING_PLAN.md','DEPENDENCY_PROVENANCE.md','FUTURE_LICENSING_POLICY.md')) {
+        if ($leaf -in @('FILE_LICENSES.csv','ASSET_OWNERSHIP.csv','LICENSE_ACTIVATION.json','LICENSE_PACKAGE.json','LICENSE_HISTORY.md','LICENSE.proprietary-code.txt','LICENSE.original-assets.txt','FUTURE_LICENSING_PLAN.md','DEPENDENCY_PROVENANCE.md','FUTURE_LICENSING_POLICY.md')) {
             throw "Internal licensing file leaked into public content: $name"
         }
     }

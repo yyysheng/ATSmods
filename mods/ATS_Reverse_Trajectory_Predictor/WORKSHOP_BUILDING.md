@@ -4,10 +4,10 @@ The SCS Workshop Uploader expects this directory to contain only `versions.sii` 
 
 Before uploading:
 
-1. Run `tools/Prepare-WorkshopPackages.ps1` to refresh the 1.60 and 1.61 content folders from `src/mod`.
+1. Run `tools/Prepare-WorkshopPackages.ps1` to refresh the 1.60, 1.61 and 1.62 content folders from `src/mod`.
 2. Select the `workshop` directory in SCS Workshop Uploader.
-3. Set the Workshop title to **Reverse Posture Assistant For ATS 1.61.x**. This is the ATS item, separate from the ETS2 item “Reverse Posture Assistant For ETS2 1.61.x.”
+3. Set the Workshop title to **Reverse Posture Assistant For ATS 1.62.x**. This is the ATS item, separate from the ETS2 item “Reverse Posture Assistant For ETS2 1.61.x.”
 4. Use `assets/workshop_cover_640x360.jpg` as the preview image.
-5. Copy the current bilingual `WORKSHOP_DESCRIPTION.txt` into the uploader's description field. It uses Steam Workshop BBCode, not Markdown, and includes the v0.11.3 ground-slope change and separate Full/Workshop runtime instructions.
+5. Copy the current bilingual `WORKSHOP_DESCRIPTION.txt` into the uploader's description field. It uses Steam Workshop BBCode, not Markdown, and includes the V1.62.2.2 ground-slope change and separate Full/Workshop runtime instructions.
 
 The published item is available at [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3792042919).

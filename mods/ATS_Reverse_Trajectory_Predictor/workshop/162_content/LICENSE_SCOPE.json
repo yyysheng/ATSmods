@@ -1,0 +1,101 @@
+{
+  "release_version": "1.62.2.2",
+  "licensor": "yyysheng",
+  "contact": "https://github.com/yyysheng/ATSmods/issues",
+  "hash_rule": "sha256:crlf-to-lf-byte-pairs-v1",
+  "scope": "Scheduled original code, its compiled portions and installer copies; third-party code and all assets excluded.",
+  "files": [
+    {
+      "path": "packaging/Install-Full.bat",
+      "sha256_lf": "aae8b434bbef8f5f756a78d91de91bdc705e2039de69653343587ad2aa75626a"
+    },
+    {
+      "path": "packaging/Install-Workshop.bat",
+      "sha256_lf": "336975add1e85e1fc2194fc29485a61999271cc41616524845de52789f952ddf"
+    },
+    {
+      "path": "packaging/Install.ps1",
+      "sha256_lf": "e7e47817719a5843d440598b813fbec81025292fddb0226e8005ba863859c4b7"
+    },
+    {
+      "path": "src/entity_runtime/ATSReverseTrajectoryRuntime.vcxproj",
+      "sha256_lf": "fff50772af2897b894db35cc1718e90901909d5026fb4657478ec308832e53c1"
+    },
+    {
+      "path": "src/entity_runtime/BuildProfileTests.vcxproj",
+      "sha256_lf": "3b7b8dfce57d4354f40ba182e21d1ac269f8a358cd8ea64f26ab9ad31367e10d"
+    },
+    {
+      "path": "src/entity_runtime/ats_trajectory_runtime.def",
+      "sha256_lf": "c4a8d73fb8447dbce3a64857e9779013f7404e4c6eda2f5ae65de748a873fde4"
+    },
+    {
+      "path": "src/entity_runtime/build_profile_tests.cpp",
+      "sha256_lf": "1f3607d7e4627288fe69fc2ed3c6c684d69e7a9d2a17f4944adb35db177304ab"
+    },
+    {
+      "path": "src/entity_runtime/build_profiles.hpp",
+      "sha256_lf": "df405d7e25ec3d179e05b597eda8b5f962435680925fc312d055f1731e2d44a4"
+    },
+    {
+      "path": "src/entity_runtime/native_entity_runtime.cpp",
+      "sha256_lf": "8b8483ca1d67aae4781a84c3f46fd0908219045e262b5d7bd576cf2fd9ba7917"
+    },
+    {
+      "path": "src/world_runtime/KinematicsTests.vcxproj",
+      "sha256_lf": "936f6d300f229c497aca2a4f1ed29a288194dc77db874c100471b7f09fd69b5f"
+    },
+    {
+      "path": "src/world_runtime/kinematics_tests.cpp",
+      "sha256_lf": "519dca462a99e565a564843afdeec09c7fa2fb59ca047c04063349c18fd4f9fb"
+    },
+    {
+      "path": "src/world_runtime/reverse_kinematics.hpp",
+      "sha256_lf": "1aaca5315fa5e0f4741b1ade23530e9ef50ddcb509ce62719d4112046f936a97"
+    },
+    {
+      "path": "tools/AssetBuilder.csproj",
+      "sha256_lf": "d83ec4a49dfe2cb9d0ee6be7f27e3f96bf94810ecfdd0825ca28fccd0ca5232c"
+    },
+    {
+      "path": "tools/Build-Release.ps1",
+      "sha256_lf": "8168d240aa452ff1b83570fe8d0dca6cae15c6595a4a2501ad717728ccfdb146"
+    },
+    {
+      "path": "tools/Compare-PrismBuilds.ps1",
+      "sha256_lf": "3b8d65c5c7306f1705aca385a9a67d29dd1a7b1f151da4c855c932aff8f3640c"
+    },
+    {
+      "path": "tools/GenerateAtsAnchorDefinitions.ps1",
+      "sha256_lf": "0e9e28886d647547b79c7435a9c879cde63434abb16ca4499daf99f18351ced4"
+    },
+    {
+      "path": "tools/GenerateEntityModels.ps1",
+      "sha256_lf": "138acbb8ccaf38a8003b51a3dafdfe04247cc028772472bdeac860c0101fed22"
+    },
+    {
+      "path": "tools/LicensePackaging.ps1",
+      "sha256_lf": "be06134ed9a165a97a5471f13084110a336397f7f7690bacacde4dcb64d3e1cb"
+    },
+    {
+      "path": "tools/MakeAccessoryAnchorInvisible.ps1",
+      "sha256_lf": "73b2e2a953dfffe7f891b7618633f006b423cf759bc601f0ed5f72c33703916d"
+    },
+    {
+      "path": "tools/MakeAccessoryAnchorVisible.ps1",
+      "sha256_lf": "2f708d624ee63af642522e316c7e54f50cafb7edd2f1eef439c6fc6037030533"
+    },
+    {
+      "path": "tools/PackageMod.ps1",
+      "sha256_lf": "f3bce11180f77716c0dbe9a12884221f18f4350e17c4626b2b359a72f7b159f2"
+    },
+    {
+      "path": "tools/Prepare-WorkshopPackages.ps1",
+      "sha256_lf": "ce28c05983bbb5d0d860778a5a3bfe6b2ad1bc6cb773cb9bfd71def16ada2b81"
+    },
+    {
+      "path": "tools/Program.cs",
+      "sha256_lf": "248a6abf6b91f6ad5880821d4420e57b030099d3cf4d3481801bbf81b4d65be4"
+    }
+  ]
+}

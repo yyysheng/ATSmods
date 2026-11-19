@@ -11,7 +11,7 @@ Full license texts are included in each release archive under `licenses/`.
 
 ## Distribution license clarification
 
-The project LICENSE is a scope index. The historical MIT text for covered original code is retained in licenses/LICENSE.historical-MIT.txt. Third-party notices apply only to the incorporated components, not to the entire mod. No new proprietary restrictions are activated by this distribution.
+The project LICENSE is a scope index. The historical MIT text for covered original code is retained in licenses/LICENSE.historical-MIT.txt. Third-party notices apply only to the incorporated components, not to the entire mod. V1.62.2.2 activates proprietary terms only for the original code scheduled in LICENSE_SCOPE.json. Third-party components and all assets are excluded.
 
 - SCS SDK: Copyright (C) 2016 SCS Software; official SDK 1.14 MIT text in licenses/LICENSE.scs-sdk.txt. Source: https://download.eurotrucksimulator2.com/scs_sdk_1_14.zip .
 - SCS telemetry wrapper provenance: Copyright (c) 2014 Hans; the preserved licenses/LICENSE.scs-telemetry.txt is from RenCloud/scs-sdk-plugin. It does not replace the SCS SDK license.

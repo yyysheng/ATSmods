@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-title Reverse Posture Assistant For ATS 1.61.x v0.11.3 - Full Installer
+title Reverse Posture Assistant For ATS 1.62.x v1.62.2.2 - Full Installer
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0installer\Install.ps1" -PackageType Full
 set "INSTALL_EXIT=%ERRORLEVEL%"
 echo.

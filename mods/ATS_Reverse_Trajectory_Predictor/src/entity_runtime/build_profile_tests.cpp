@@ -207,7 +207,40 @@ int main(int argc, char **argv)
         image161318[helper.rva] ^= 0xff;
     }
 
-    std::cout << "ATS build profile tests passed: exact 1.60/1.61.1/1.61.2/1.61.3 profiles, including executable file version 1.61.3.18; "
+    std::vector<std::uint8_t> image16222(image_size, 0xcc);
+    const auto &current16222 = build_profiles[6];
+    for (const auto &hook : current16222.enabled_hooks)
+        std::copy(hook.signature.begin(), hook.signature.end(),
+                  image16222.begin() + hook.rva);
+    for (const auto &helper : current16222.runtime_signatures)
+        std::copy(helper.signature.begin(), helper.signature.end(),
+                  image16222.begin() + helper.rva);
+    const auto reader16222 = [&](std::uintptr_t rva,
+                                  const std::uint8_t *bytes,
+                                  std::size_t size) {
+        return rva <= image16222.size() &&
+            size <= image16222.size() - rva &&
+            std::memcmp(image16222.data() + rva, bytes, size) == 0;
+    };
+    CHECK(select_build_profile(current16222.executable_sha256,
+                               reader16222, &exact, &failed) ==
+          &current16222 && exact);
+    CHECK(select_build_profile("UNKNOWN-1.62.2.2", reader16222,
+                               &exact, &failed) == nullptr);
+    for (const auto &hook : current16222.enabled_hooks) {
+        image16222[hook.rva] ^= 0xff;
+        CHECK(select_build_profile(current16222.executable_sha256,
+                                   reader16222, &exact, &failed) == nullptr);
+        image16222[hook.rva] ^= 0xff;
+    }
+    for (const auto &helper : current16222.runtime_signatures) {
+        image16222[helper.rva] ^= 0xff;
+        CHECK(select_build_profile(current16222.executable_sha256,
+                                   reader16222, &exact, &failed) == nullptr);
+        image16222[helper.rva] ^= 0xff;
+    }
+
+    std::cout << "ATS build profile tests passed: exact 1.60/1.61.1/1.61.2/1.61.3 profiles, including executable file versions 1.61.3.18 and 1.62.2.2; "
                  "1.60 compatible fallback; required hook/helper mismatch rejected\n";
 
     if (argc == 3)
@@ -225,6 +258,14 @@ int main(int argc, char **argv)
         const auto *exact_file = select_build_profile(
             argv[2], file_reader, &exact, &failed);
         CHECK(exact_file != nullptr && exact);
+        if (exact_file->id == "ats-1.62.2.2-steam-public")
+        {
+            const std::array<std::uint8_t, 16> quit_signature{
+                0x40, 0x53, 0x48, 0x81, 0xec, 0x40, 0x0c, 0x00,
+                0x00, 0x48, 0x8b, 0xd9, 0x83, 0xfa, 0xff, 0x0f};
+            CHECK(file_signature_matches(executable, 0x001e8960,
+                                         quit_signature.data(), quit_signature.size()));
+        }
         const auto *alternate_digest = select_build_profile(
             "OFFLINE-SECOND-DIGEST", file_reader, &exact, &failed);
         CHECK(alternate_digest == nullptr && !exact);

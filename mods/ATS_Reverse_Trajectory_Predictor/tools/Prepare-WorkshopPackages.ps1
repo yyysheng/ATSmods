@@ -5,7 +5,7 @@ $null = Get-LicensePackageFiles $licenseProjectRoot
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $source = (Resolve-Path (Join-Path $root 'src\mod')).Path
 $workshopRoot = (Resolve-Path (Join-Path $root 'workshop')).Path
-$versionFolders = @('160_content', '161_content')
+$versionFolders = @('160_content', '161_content', '162_content')
 $utf8NoBom = [Text.UTF8Encoding]::new($false)
 
 foreach ($folderName in $versionFolders) {
@@ -29,14 +29,14 @@ foreach ($folderName in $versionFolders) {
 
     $manifestPath = Join-Path $destination 'manifest.sii'
     $manifest = [IO.File]::ReadAllText($manifestPath)
-    $manifest = [regex]::Replace($manifest, 'package_version\s*:\s*"\d+\.\d+\.\d+"', 'package_version: "0.11.3"')
+    $manifest = [regex]::Replace($manifest, 'package_version\s*:\s*"\d+\.\d+\.\d+(?:\.\d+)?"', 'package_version: "1.62.2.2"')
     $manifest = [regex]::Replace($manifest, '(?m)^\s*(?:display_name\s*:|compatible_versions\[\]\s*:).*(?:\r?\n|$)', '')
     [IO.File]::WriteAllText($manifestPath, $manifest, $utf8NoBom)
 }
 
 $rootEntries = Get-ChildItem -LiteralPath $workshopRoot -Force
 $allowedFiles = @('versions.sii')
-$allowedFolders = @('160_content', '161_content', 'universal_info')
+$allowedFolders = @('160_content', '161_content', '162_content', 'universal_info')
 $unexpected = $rootEntries | Where-Object {
     if ($_.PSIsContainer) { $_.Name -notin $allowedFolders }
     else { $_.Name -notin $allowedFiles }
@@ -45,12 +45,12 @@ if ($unexpected) { throw "Workshop root may contain only versions.sii and packag
 
 foreach ($folderName in $versionFolders) {
     $manifest = Get-Content -Raw (Join-Path (Join-Path $workshopRoot $folderName) 'manifest.sii')
-    if ($manifest -notmatch 'package_version\s*:\s*"0\.11\.3"') { throw "Version was not updated in $folderName" }
+    if ($manifest -notmatch 'package_version\s*:\s*"1\.62\.2\.2"') { throw "Version was not updated in $folderName" }
     if ($manifest -match '(?m)^\s*(?:display_name\s*:|compatible_versions\[\]\s*:)') { throw "Uploader-managed fields remain in $folderName/manifest.sii" }
 }
 
-Write-Output "Prepared ATS 1.60 and 1.61 Workshop content packages at $workshopRoot"
+Write-Output "Prepared ATS 1.60, 1.61 and 1.62 Workshop content packages at $workshopRoot"
 
-foreach ($package in @('160_content', '161_content', 'universal_info')) {
+foreach ($package in @('160_content', '161_content', '162_content', 'universal_info')) {
     Copy-LicenseFilesToDirectory $licenseProjectRoot (Join-Path $licenseProjectRoot ('workshop/' + $package))
 }

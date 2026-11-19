@@ -1,67 +1,33 @@
-[h1]Reverse Posture Assistant For ATS 1.61.x[/h1]
-[b]American Truck Simulator only · v0.11.3 · ATS 1.60.x / 1.61.x · Windows x64[/b]
+[h1]Reverse Posture Assistant For ATS V1.62.2.2[/h1]
+[b]American Truck Simulator · ATS 1.62.2.2 · Windows x64[/b]
 
-While reversing, this mod draws the predicted tractor and trailer sweep path directly in the ATS game world. Blue lines mark the tractor boundaries; orange lines mark the trailer boundaries. The fixed prediction distance is 5 m and the path responds to steering, trailer angle, wheel contact, lift state and steerable axles.
+World-space reverse prediction, blue tractor and orange trailer boundaries, 5 m prediction distance. Road slope follows grounded wheel centres and suspension travel. Lines appear in reverse gear and hide while paused.
 
-[b]Game scope:[/b] This Workshop item is for American Truck Simulator. “Reverse Posture Assistant For ETS2 1.61.x” is a separate mod for Euro Truck Simulator 2.
+[b]Version numbering[/b]
+Starting with V1.62.2.2, the mod version matches its target game version. Historical v0.11.x releases keep their original numbers.
+This release targets ATS 1.62.2.2, Steam Build 26761334, with exact executable hash, four rendering hook checks and four helper checks. Unknown executables retain telemetry-only mode.
+Early quit model cleanup is ported from the ETS2 assistant. Trajectory rendering was user-confirmed on the preceding adaptation; this build's exit cleanup awaits an in-game recheck.
 
-[b]Features[/b]
-[list]
-[*]World-space prediction lines appear in reverse gear and hide while paused or outside reverse gear.
-[*]Ground grade follows grounded tyre centres and per-wheel suspension travel, not chassis pitch/roll alone. Changing front or rear suspension height by itself will not tilt the guide on level ground.
-[*]A single-axle trailer reuses the tractor tyre fit only for the direction its own wheel layout cannot determine.
-[*]No cabin accessory is required. The game's trailer guide markers remain unchanged.
-[*]No camera, mirror-image or depth-buffer capture; no bundled ReShade, dxgi.dll or d3d11.dll.
-[/list]
+[b]Installation / update[/b]
+Subscribe and enable this Workshop item. Exit ATS, download the [url=https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v1.62.2.2/Reverse_Posture_Assistant_For_ATS_v1.62.2.2_Workshop.zip]V1.62.2.2 Workshop runtime package[/url], extract and run Install-Workshop.bat. Update both Workshop resources and DLL. Enable one resource source at a time.
+[url=https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v1.62.2.2]Full standalone package and release notes[/url]
+Workshop downloads provide resources; the runtime package installs the required DLL.
 
-[b]v0.11.3 · ground-slope update[/b]
-[list]
-[*]Fits road slope from grounded wheel centres reconstructed with suspension travel, filtering suspension-induced chassis pitch/roll from the guide.
-[*]Retains ATS 1.61.3.1, 1.61.2.0, 1.61.1.1 and 1.60.1.8 exact Windows x64 profiles, plus the ATS 1.60 signature-compatible fallback.
-[*]Unknown or modified executables skip native hooks and keep telemetry-only mode.
-[*]Truck and trailer support only; personal vehicle mode does not show prediction lines.
-[/list]
-
-[b]Workshop installation / update[/b]
-1. Subscribe to this ATS Workshop item and let Steam download its resources.
-2. Download the [url=https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.3/Reverse_Posture_Assistant_For_ATS_v0.11.3_Workshop.zip]v0.11.3 Workshop runtime package[/url]. Exit ATS, extract the ZIP and run Install-Workshop.bat.
-3. Enable this Workshop item in the Mod Manager, disable any standalone copy, then restart ATS.
-
-[b]A Workshop subscription does not install the runtime DLL.[/b] Steam supplies the mod resources; the GitHub package installs the DLL. For standalone use, download the [url=https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.3/Reverse_Posture_Assistant_For_ATS_v0.11.3_Full.zip]Full package[/url] instead. Do not enable the Full and Workshop copies together.
-
-[b]Compatibility:[/b] ATS 1.61.3.1 has exact Windows x64 profiles, including the current local Steam executable file version 1.61.3.18; ATS 1.61.2.0 and 1.61.1.1 also have exact profiles. ATS 1.60.1.8 has an exact profile; other ATS 1.60 builds require matching enabled-hook signatures. Unknown builds remain in telemetry-only mode.
-
-[url=https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.3]Downloads and release notes · v0.11.3[/url] · [url=https://github.com/yyysheng/ATSmods/tree/main/mods/ATS_Reverse_Trajectory_Predictor]Source and documentation[/url]
+[b]Licensing[/b]
+Historical MIT grants for original code remain effective. Full MIT text and third-party notices are included. V1.62.2.2 activates proprietary terms for scheduled original code. Historical MIT grants and third-party licenses remain effective; assets are excluded.
 
 [h1]简体中文[/h1]
-倒车时，本模组直接在美卡游戏世界中绘制车头与挂车的预测扫掠路径：蓝线表示车头边界，橙线表示挂车边界，固定预测距离为 5 米。轨迹随方向盘、挂车角度、车轮接地、提升状态及可转向轴变化。
+倒挡时在游戏世界中显示固定 5 米预测边界，车头蓝线、挂车橙线。轨迹随转向、挂车角度和车轮状态变化，坡度使用接地轮胎中心与悬挂行程拟合。
 
-[b]游戏范围：[/b]本条目仅适用于 American Truck Simulator。“Reverse Posture Assistant For ETS2 1.61.x”是欧卡 2 的另一个独立模组。
+[b]版本号说明[/b]
+从 V1.62.2.2 起，模组版本号与本版适配的游戏版本号一致。历史 v0.11.x 编号及下载保留。
+本版适配 ATS 1.62.2.2、Steam Build 26761334。原生接口按精确可执行文件哈希及签名启用，未知构建仅保留遥测。
+本版移植欧卡助手的退出前模型释放与暂停保留模型方案。上一适配版轨迹显示已获用户实测确认，本次退出修正仍待实机复测。
 
-[b]功能特点[/b]
-[list]
-[*]只在倒挡时显示预测线；暂停或离开倒挡时隐藏。
-[*]坡度按接地轮胎中心与悬挂行程拟合，不再仅跟随车身俯仰/侧倾；平地上单独调整前后悬挂高度不会造成轨迹倾斜。
-[*]单轴挂车自身无法拟合的方向，会回退使用车头的轮胎坡度。
-[*]不需要驾驶室挂件，保留游戏原生挂车提示标记。
-[*]不抓取摄像头、后视镜画面或深度缓冲，不附带 ReShade、dxgi.dll 或 d3d11.dll。
-[/list]
+[b]安装与更新[/b]
+订阅并启用本工坊条目，完全退出美卡，下载 [url=https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v1.62.2.2/Reverse_Posture_Assistant_For_ATS_v1.62.2.2_Workshop.zip]V1.62.2.2 工坊运行组件包[/url]，解压并运行 Install-Workshop.bat。请同时更新工坊资源和 DLL，同一时间启用一个资源来源。
+[url=https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v1.62.2.2]完整独立包及更新说明[/url]
+工坊提供资源，GitHub 运行组件包负责安装必需的 DLL。
 
-[b]v0.11.3 · 坡度拟合更新[/b]
-[list]
-[*]根据接地轮胎中心和悬挂行程拟合路面坡度，避免悬挂导致的车身俯仰/侧倾影响轨迹线。
-[*]保留 ATS 1.61.3.1（含当前本机 Steam 可执行文件内部版本 1.61.3.18）、1.61.2.0、1.61.1.1、1.60.1.8 精确配置，以及 ATS 1.60 签名兼容回退。
-[*]未知或修改过的可执行文件会跳过原生 Hook，仅保留遥测模式。
-[*]仅支持卡车车头与挂车；乘用车模式不显示倒车线。
-[/list]
-
-[b]工坊安装与升级[/b]
-1. 订阅本美卡工坊条目，等待 Steam 下载模组资源。
-2. 下载 [url=https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.3/Reverse_Posture_Assistant_For_ATS_v0.11.3_Workshop.zip]v0.11.3 工坊运行组件包[/url]。退出美卡、解压并运行 Install-Workshop.bat。
-3. 在模组管理器中启用本工坊条目，停用本地副本，然后重新启动美卡。
-
-[b]仅订阅工坊不会自动安装 DLL。[/b]Steam 提供模组资源，GitHub 运行组件包安装 DLL。本地独立安装请改用 [url=https://github.com/yyysheng/ATSmods/releases/download/reverse-trajectory-predictor-v0.11.3/Reverse_Posture_Assistant_For_ATS_v0.11.3_Full.zip]Full 完整包[/url]，不要同时启用本地版和工坊版。
-
-[b]兼容范围：[/b]ATS 1.61.3.1（包括当前本机 Steam 可执行文件内部版本 1.61.3.18）、1.61.2.0、1.61.1.1 均有 Windows x64 精确配置；ATS 1.60.1.8 有精确配置，其他 ATS 1.60 构建需匹配 Hook 签名。未知构建仅运行遥测模式。
-
-[url=https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.3]v0.11.3 下载与更新说明[/url] · [url=https://github.com/yyysheng/ATSmods/tree/main/mods/ATS_Reverse_Trajectory_Predictor]源码与完整说明[/url]
+[b]许可证[/b]
+历史原创代码的 MIT 授权继续有效，完整 MIT 文本和第三方声明随包保留。V1.62.2.2 起对清单内原创代码启用专有授权，历史 MIT 授权和第三方许可证继续有效，素材不纳入专有范围。

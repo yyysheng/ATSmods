@@ -37,6 +37,25 @@ constexpr std::size_t maximum_traced_model_paths = 8192;
 // that detach nodes, replace transforms, or modify final draw records remain
 // disabled until this read-only stage has passed an in-game stability test.
 constexpr bool lifecycle_hooks_enabled = true;
+// Verified on the exact ATS 1.62.2.2 executable. The command dispatcher
+// receives a pointer to the command string before beginning game teardown.
+constexpr std::uintptr_t command_dispatch_rva = 0x001e8960;
+constexpr std::array<std::uint8_t, 16> command_dispatch_signature{
+    0x40, 0x53, 0x48, 0x81, 0xec, 0x40, 0x0c, 0x00,
+    0x00, 0x48, 0x8b, 0xd9, 0x83, 0xfa, 0xff, 0x0f};
+using CommandDispatch = bool(__fastcall *)(const char *const *, int);
+CommandDispatch original_command_dispatch = nullptr;
+std::atomic<bool> quit_requested{false};
+void release_prediction_models_before_quit();
+
+bool __fastcall hooked_command_dispatch(const char *const *command, int mode)
+{
+    if (command && *command && std::strcmp(*command, "quit") == 0 &&
+        !quit_requested.exchange(true, std::memory_order_acq_rel))
+        release_prediction_models_before_quit();
+    return original_command_dispatch(command, mode);
+}
+
 constexpr bool model_load_hook_only = true;
 constexpr char accessory_model_path[] = "/model/reverse_assist/accessory_anchor.pmd";
 // The map file grid is 4000 metres, but Prism's runtime fplacement_t uses
@@ -1445,12 +1464,27 @@ bool install_model_load_hook()
             !engine.set_parent || !engine.set_transform)
             return false;
     }
+    const bool use_quit_hook = active_build_profile &&
+        active_build_profile->id == "ats-1.62.2.2-steam-public";
+    if (use_quit_hook &&
+        std::memcmp(engine.base + command_dispatch_rva,
+                    command_dispatch_signature.data(),
+                    command_dispatch_signature.size()) != 0)
+    {
+        log_line("[reverse-entity] Quit command signature mismatch; native backend disabled.",
+                 SCS_LOG_TYPE_error);
+        return false;
+    }
     if (MH_Initialize() != MH_OK)
     {
         log_line("[reverse-entity] MinHook initialization failed.", SCS_LOG_TYPE_error);
         return false;
     }
     bool hooks_created =
+        (!use_quit_hook ||
+         MH_CreateHook(engine.base + command_dispatch_rva,
+                       reinterpret_cast<LPVOID>(&hooked_command_dispatch),
+                       reinterpret_cast<LPVOID *>(&original_command_dispatch)) == MH_OK) &&
         MH_CreateHook(reinterpret_cast<LPVOID>(engine.model_load),
                       reinterpret_cast<LPVOID>(&hooked_model_load),
                       reinterpret_cast<LPVOID *>(&original_model_load)) == MH_OK &&
@@ -1500,6 +1534,8 @@ bool install_model_load_hook()
     if (!hooks_created || MH_EnableHook(MH_ALL_HOOKS) != MH_OK)
     {
         MH_DisableHook(MH_ALL_HOOKS);
+        if (original_command_dispatch)
+            MH_RemoveHook(engine.base + command_dispatch_rva);
         MH_RemoveHook(reinterpret_cast<LPVOID>(engine.model_load));
         MH_RemoveHook(
             reinterpret_cast<LPVOID>(engine.vehicle_render_dispatch));
@@ -1529,7 +1565,7 @@ bool install_model_load_hook()
     }
     model_load_hook_installed = true;
     if constexpr (model_load_hook_only)
-        log_line("[reverse-entity] Installed 4/4 enabled hooks: model_load, vehicle_render_dispatch, trailer_visual_update, trailer_render.");
+        log_line("[reverse-entity] Installed rendering hooks; exact ATS 1.62.2.2 also uses verified early quit cleanup.");
     else
         log_line("[reverse-entity] Final vehicle accessory instance hooks installed.");
     return true;
@@ -1539,6 +1575,9 @@ void remove_model_load_hook()
 {
     if (!model_load_hook_installed) return;
     MH_DisableHook(MH_ALL_HOOKS);
+    if (original_command_dispatch)
+        MH_RemoveHook(engine.base + command_dispatch_rva);
+    original_command_dispatch = nullptr;
     MH_RemoveHook(reinterpret_cast<LPVOID>(engine.model_load));
     MH_RemoveHook(reinterpret_cast<LPVOID>(engine.vehicle_render_dispatch));
     MH_RemoveHook(reinterpret_cast<LPVOID>(engine.trailer_visual_update));
@@ -2317,48 +2356,34 @@ bool unsafe_destroy_model(std::uint64_t *model)
     }
 }
 
-void destroy_prediction_render_models()
+void suspend_prediction_rendering()
 {
-    independent_frame_render_disabled.store(true,
-                                            std::memory_order_release);
-    {
-        std::lock_guard frame_lock(prediction_frames_mutex);
-        prediction_frames = {};
-    }
+    independent_frame_render_disabled.store(true, std::memory_order_release);
+    // Wait for any render already in progress. These unparented models are
+    // submitted only here and are reused across pauses. Keep the bounded
+    // pool for the process lifetime so teardown never invokes native release.
+    std::lock_guard model_lock(prediction_models_mutex);
+    std::lock_guard frame_lock(prediction_frames_mutex);
+    prediction_frames = {};
+}
 
+void release_prediction_models_before_quit()
+{
+    suspend_prediction_rendering();
     std::lock_guard model_lock(prediction_models_mutex);
     std::size_t released = 0;
-    bool destroy_fault = false;
     const auto release_pool = [&](auto &models) {
         for (auto *&model : models)
         {
             if (!model) continue;
-            if (!unsafe_destroy_model(model))
-                destroy_fault = true;
-            else
-                ++released;
+            if (unsafe_destroy_model(model)) ++released;
             model = nullptr;
         }
     };
     release_pool(tractor_prediction_models);
     release_pool(trailer_prediction_models);
-
-    logged_independent_frame_render.store(false,
-                                          std::memory_order_relaxed);
-    logged_independent_frame_models.store(false,
-                                          std::memory_order_relaxed);
-    if (released != 0)
-    {
-        log_line("[reverse-entity] Released " +
-                 std::to_string(released) +
-                 " independent prediction models before scene teardown.");
-    }
-    if (destroy_fault)
-    {
-        log_line("[reverse-entity] Prediction model release faulted; "
-                 "render backend disabled.",
-                 SCS_LOG_TYPE_error);
-    }
+    log_line("[reverse-entity] Quit command: released " + std::to_string(released) +
+             " prediction models before engine teardown.");
 }
 
 void destroy_tail(std::vector<Entity> &pool, std::size_t first)
@@ -3132,6 +3157,7 @@ SCSAPI_VOID event_callback(const scs_event_t event,
                            const void *const event_info,
                            const scs_context_t)
 {
+    if (quit_requested.load(std::memory_order_acquire)) return;
     if (event == SCS_TELEMETRY_EVENT_configuration)
     {
         update_vehicle_configuration(
@@ -3157,7 +3183,7 @@ SCSAPI_VOID event_callback(const scs_event_t event,
     }
     else if (event == SCS_TELEMETRY_EVENT_paused)
     {
-        destroy_prediction_render_models();
+        suspend_prediction_rendering();
         if (!entities.empty() && telemetry.truck_valid)
         {
             const auto hidden = make_local_transform(0.0, -100.0, 0.0, 0.0);
@@ -3285,7 +3311,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version,
 SCSAPI_VOID scs_telemetry_shutdown(void)
 {
     log_line("[reverse-entity] Telemetry shutdown started.");
-    destroy_prediction_render_models();
+    suspend_prediction_rendering();
     engine.enabled = false;
     remove_model_load_hook();
     log_line("[reverse-entity] Telemetry shutdown completed.");

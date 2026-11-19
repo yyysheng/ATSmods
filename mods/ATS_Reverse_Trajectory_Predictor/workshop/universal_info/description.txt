@@ -1,4 +1,4 @@
-Reverse Posture Assistant For ATS 1.61.x v0.11.3
+Reverse Posture Assistant For ATS 1.62.x v1.62.2.2
 
 仅适用于 American Truck Simulator。倒挡时显示蓝色车头与橙色挂车预测边界，固定预测距离 5 米。坡度按接地轮胎中心与悬挂行程拟合，避免悬挂高低造成平地轨迹倾斜。
 欧卡 2 的 Reverse Posture Assistant 是不同游戏的独立模组。仅支持卡车车头与挂车；乘用车模式不显示倒车线。
@@ -10,4 +10,4 @@ Separate from the ETS2 mod. Truck and trailer support only; no reverse lines in 
 Windows x64. Exact executable profiles cover ATS 1.60.1.8, 1.61.1.1, 1.61.2.0, 1.61.3.1 and local executable file version 1.61.3.18.
 Workshop subscription does not include the runtime DLL. Install the GitHub Workshop runtime package and do not enable standalone and Workshop copies together.
 
-https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v0.11.3
+https://github.com/yyysheng/ATSmods/releases/tag/reverse-trajectory-predictor-v1.62.2.2

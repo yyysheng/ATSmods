@@ -13,7 +13,7 @@ $build = Join-Path $root 'build'
 $release = Join-Path $build 'release'
 $staging = Join-Path $build 'package_staging'
 if ([IO.Path]::GetFullPath($staging) -ne "$root\build\package_staging") { throw 'Unsafe staging path.' }
-$version = '0.11.3'
+$version = '1.62.2.2'
 $modName = 'Reverse_Posture_Assistant_For_ATS_1.61.scs'
 $runtimeName = 'ATSReverseTrajectoryRuntime.dll'
 

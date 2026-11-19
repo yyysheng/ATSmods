@@ -1,0 +1,14 @@
+PROJECT LICENSING NOTICE — ATS_Reverse_Trajectory_Predictor V1.62.2.2
+
+Current distribution mode: proprietary-original-code.
+Licensor: yyysheng. Contact: https://github.com/yyysheng/ATSmods/issues
+
+The original code listed in LICENSE_SCOPE.json is governed prospectively by licenses/LICENSE_CODE_PROPRIETARY.txt at this release's immutable Git commit. The official binary's original-code portions and installer copies are included in that scope. RELEASE_APPROVAL.json and the release tag identify the approved commit.
+
+Historical MIT grants remain effective for historical copies. The complete historical text is retained verbatim in licenses/LICENSE.historical-MIT.txt and mapped in LICENSE_HISTORY.md. This release does not revoke or narrow previous MIT grants.
+
+SCS SDK, telemetry-wrapper provenance, MinHook and HDE retain their own licenses and copyright notices in THIRD_PARTY_NOTICES.md and licenses/. Third-party components are excluded from proprietary coverage.
+
+Models, textures, wireframes and preview images are excluded from this code license. Historical asset-license coverage remains unresolved; no blanket MIT or exclusive proprietary asset designation is made. Existing lawful rights remain effective.
+
+Only the new V1.62.2.2 distribution and scheduled original code are activated. Historical releases and tags retain their original grants.

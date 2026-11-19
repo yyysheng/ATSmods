@@ -1,0 +1,17 @@
+ORIGINAL CODE PROPRIETARY LICENSE — REVISION 2026-11-20
+
+Licensor: yyysheng (GitHub account).
+Contact: https://github.com/yyysheng/ATSmods/issues
+Effective release: Reverse Posture Assistant For ATS V1.62.2.2, targeting ATS 1.62.2.2.
+
+1. Scope. These terms apply to the licensor-owned original code explicitly listed in LICENSE_SCOPE.json at this release's immutable Git commit, and to those original portions in the official compiled binaries and installer copies. The release tag and RELEASE_APPROVAL.json identify that commit. Third-party code and assets are excluded. The licensor has confirmed full relicensing authority for the scheduled original code.
+
+2. Permitted use. End users may install and execute official binaries for the supported mod use and make copies reasonably necessary for installation and personal backup. No fee is imposed by these terms.
+
+3. Reserved rights. Except for section 2, applicable law, separate written authorization or existing rights preserved by section 4, permission is not granted to copy or reuse covered source code, modify or adapt it, redistribute covered material, sublicense or sell it, or incorporate it into other mods. Further permissions require authorization from the licensor.
+
+4. Existing and external rights. Historical lawful MIT grants are not revoked or reduced. These prospective terms may cover fully owned original code previously published under MIT, without changing rights already granted for prior copies. Third-party licenses control their components. Platform-required rights, statutory exceptions, independently developed implementations and general mathematical ideas, formulas and methods remain unaffected. Public visibility of source alone grants no additional rights beyond these terms and applicable platform rights.
+
+5. Assets. Models, textures, wireframes, preview images and other assets are excluded from this code license. Existing lawful asset rights and third-party rights remain effective. No exclusive proprietary asset ownership is asserted by this release.
+
+6. Disclaimer. To the extent permitted by applicable law, covered material is provided AS IS without express or implied warranties, and the licensor is not liable for resulting damages. Mandatory legal rights remain unaffected.
